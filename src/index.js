@@ -10,3 +10,8 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+fetch('http://localhost:8000/current-time')
+  .then(response => response.json())
+  .then(console.log)
+  .catch(console.error)
