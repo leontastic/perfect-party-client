@@ -4,15 +4,7 @@ import SwipeableViews from 'react-swipeable-views'
 import { createStructuredSelector } from 'reselect'
 
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  AppBar,
-  Container,
-  Fab,
-  Slide,
-  Tab,
-  Tabs,
-  Typography,
-} from '@material-ui/core'
+import { AppBar, Container, Fab, Slide, Tab, Tabs, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import EventIcon from '@material-ui/icons/EventOutlined'
 import FaceIcon from '@material-ui/icons/FaceOutlined'
@@ -23,19 +15,13 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCartOutlined'
 import { grey } from '@material-ui/core/colors'
 
 import Logo from './components/Logo'
-import { getViewportWidth } from './store/selectors'
+import { getTab, getViewportWidth } from './store/selectors'
 import './App.css'
 import Hosts from './views/Hosts'
 import Events from './views/Events'
 import Venues from './views/Venues'
 import Suppliers from './views/Suppliers'
-import {
-  createHost,
-  createEvent,
-  createVenue,
-  createSupplier,
-  createProduct,
-} from './store/actions'
+import { createHost, createEvent, createVenue, createSupplier, createProduct, navigateTo } from './store/actions'
 
 const TabContainer = ({ children }) => (
   <Container maxWidth='sm'>
@@ -83,77 +69,98 @@ const App = ({
   createVenue,
   createSupplier,
   createProduct,
+  currentTab,
+  navigateTo,
 }) => {
   const classes = useStyles()
   const tabs = [
     {
-      route: '/hosts',
+      tabName: 'hosts',
       name: 'Hosts',
       content: <Hosts />,
       icon: <FaceIcon />,
       action: ['Add Host', createHost],
     },
     {
-      route: '/events',
+      tabName: 'events',
       name: 'Events',
       icon: <EventIcon />,
       content: <Events />,
       action: ['Add Event', createEvent],
     },
     {
-      route: '/venues',
+      tabName: 'venues',
       name: 'Venues',
       icon: <LocationCityIcon />,
       content: <Venues />,
       action: ['Add Venue', createVenue],
     },
     {
-      route: '/suppliers',
+      tabName: 'suppliers',
       name: 'Suppliers',
       icon: <LocalShippingIcon />,
       content: <Suppliers />,
       action: ['Add Supplier', createSupplier],
     },
     {
-      route: '/products',
+      tabName: 'products',
       name: 'Products',
       icon: <LocalFloristIcon />,
       content: 'Products',
       action: ['Add Product', createProduct],
     },
     {
-      route: '/orders',
+      tabName: 'orders',
       name: 'Orders',
       icon: <ShoppingCartIcon />,
       content: 'Orders',
     },
   ]
-  const [currentPageRoute, setCurrentPageRoute] = React.useState(
-    window.location.pathname,
+
+  const currentTabIndex = tabs.findIndex(({ tabName }) => tabName === currentTab)
+
+  const renderTabNavButton = ({ icon, name, tabName }, index) => (
+    <Tab key={index} icon={icon} label={name} value={tabName} />
   )
-  const currentTabIndex = tabs.findIndex(
-    ({ route }) => route === currentPageRoute,
-  )
+
+  const renderTabContent = ({ content }, index) => <TabContainer key={index}>{content}</TabContainer>
+
+  const renderTabAction = ({ action: [label, action] = [] }, index) =>
+    label &&
+    action && (
+      <Slide
+        key={index}
+        direction='up'
+        className={classes.fab}
+        in={currentTabIndex === index}
+        timeout={{ enter: 500, exit: 200 }}
+        mountOnEnter
+        unmountOnExit
+      >
+        <Fab variant='extended' color='primary' className={classes.fab} onClick={() => action()}>
+          <AddIcon className={classes.fabIcon} />
+          {label}
+        </Fab>
+      </Slide>
+    )
 
   return (
     <div className={classes.root}>
       <AppBar position='static' classes={{ root: classes.appbar }}>
         <Logo />
         <Tabs
-          value={currentPageRoute}
-          onChange={(event, route) => setCurrentPageRoute(route)}
+          value={currentTab}
+          onChange={(event, tabName) => navigateTo(tabName)}
           variant={viewportWidth > 600 ? 'standard' : 'scrollable'}
           centered={viewportWidth > 600}
         >
-          {tabs.map(({ icon, name, route }, index) => (
-            <Tab key={index} icon={icon} label={name} value={route} />
-          ))}
+          {tabs.map(renderTabNavButton)}
         </Tabs>
       </AppBar>
       <SwipeableViews
         axis='x'
         index={currentTabIndex}
-        onChangeIndex={index => setCurrentPageRoute(tabs[index].route)}
+        onChangeIndex={index => navigateTo(tabs[index].tabName)}
         className={classes.tabs}
         springConfig={{
           duration: '0.5s',
@@ -161,35 +168,9 @@ const App = ({
           delay: '0s',
         }}
       >
-        {tabs.map(({ route, content }, index) => (
-          <TabContainer key={index}>{content}</TabContainer>
-        ))}
+        {tabs.map(renderTabContent)}
       </SwipeableViews>
-      {tabs.map(
-        ({ action: [label, action] = [] }, index) =>
-          label &&
-          action && (
-            <Slide
-              key={index}
-              direction='up'
-              className={classes.fab}
-              in={currentTabIndex === index}
-              timeout={{ enter: 500, exit: 200 }}
-              mountOnEnter
-              unmountOnExit
-            >
-              <Fab
-                variant='extended'
-                color='primary'
-                className={classes.fab}
-                onClick={() => action()}
-              >
-                <AddIcon className={classes.fabIcon} />
-                {label}
-              </Fab>
-            </Slide>
-          ),
-      )}
+      {tabs.map(renderTabAction)}
     </div>
   )
 }
@@ -197,6 +178,7 @@ const App = ({
 export default connect(
   createStructuredSelector({
     viewportWidth: getViewportWidth,
+    currentTab: getTab,
   }),
   {
     createHost: createHost.request,
@@ -204,5 +186,6 @@ export default connect(
     createVenue: createVenue.request,
     createSupplier: createSupplier.request,
     createProduct: createProduct.request,
+    navigateTo,
   },
 )(App)

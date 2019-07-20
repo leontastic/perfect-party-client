@@ -44,3 +44,6 @@ export const createProduct = createAsyncAction(
 )()
 
 export const resizeViewport = createStandardAction('@VIEWPORT/RESIZE')()
+
+export const navigateTo = createStandardAction('@HISTORY/NAVIGATE')()
+export const setRoute = createStandardAction('@HISTORY/SET_ROUTE')()
