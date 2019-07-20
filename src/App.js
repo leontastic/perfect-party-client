@@ -17,6 +17,7 @@ import Logo from './components/Logo'
 import { getViewportWidth } from './store/selectors'
 import './App.css'
 import Hosts from './views/Hosts'
+import Events from './views/Events'
 
 const TabContainer = ({ children }) => (
   <Container maxWidth='sm'>
@@ -43,6 +44,9 @@ const useStyles = makeStyles(theme => ({
   },
   tabs: {
     flex: 1,
+    '& > *': {
+      height: '100%',
+    },
   },
 }))
 
@@ -77,7 +81,9 @@ const App = ({ viewportWidth }) => {
         <TabContainer>
           <Hosts />
         </TabContainer>
-        <TabContainer>Events</TabContainer>
+        <TabContainer>
+          <Events />
+        </TabContainer>
         <TabContainer>Venues</TabContainer>
         <TabContainer>Suppliers</TabContainer>
         <TabContainer>Products</TabContainer>
