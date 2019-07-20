@@ -3,3 +3,4 @@ export const getViewportHeight = state => state.viewport.height
 export const getEvents = state => state.events
 export const getHosts = state => state.hosts
 export const getVenues = state => state.venues
+export const getSuppliers = state => state.suppliers

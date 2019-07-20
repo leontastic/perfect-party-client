@@ -26,9 +26,9 @@ const useStyles = makeStyles(theme => ({
 const Venues = ({ venues }) => {
   const classes = useStyles()
 
-  return venues.map(({ name, address, price, eventcount }) => (
-    <Card classes={{ root: classes.card }}>
-      <CardContent container spacing={2}>
+  return venues.map(({ venueid, name, address, price, eventcount }) => (
+    <Card classes={{ root: classes.card }} key={venueid}>
+      <CardContent>
         <Grid item xs={12} sm container>
           <Grid item xs container direction='column' spacing={2}>
             <Grid item xs>

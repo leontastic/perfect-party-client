@@ -1,5 +1,5 @@
 import { all, spawn } from 'redux-saga/effects'
-import { addHosts, addEvents, addVenues } from '../actions'
+import { loadHosts, loadEvents, loadVenues, loadSuppliers } from '../actions'
 import fetchDispatch from './fetchDispatch'
 import viewport from './viewport'
 
@@ -9,8 +9,9 @@ const route = (...path) => `${HOSTNAME}/${path.join('/')}`
 export default function*() {
   yield all([
     spawn(viewport),
-    spawn(fetchDispatch, route('hosts'), addHosts),
-    spawn(fetchDispatch, route('events'), addEvents),
-    spawn(fetchDispatch, route('venues'), addVenues),
+    spawn(fetchDispatch, route('hosts'), loadHosts),
+    spawn(fetchDispatch, route('events'), loadEvents),
+    spawn(fetchDispatch, route('venues'), loadVenues),
+    spawn(fetchDispatch, route('suppliers'), loadSuppliers),
   ])
 }

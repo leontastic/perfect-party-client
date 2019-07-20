@@ -1,12 +1,27 @@
 import { combineReducers } from 'redux'
-import hosts from './hosts'
-import events from './events'
-import venues from './venues'
-import viewport from './viewport'
+import { createReducer } from 'typesafe-actions'
+import {
+  loadHosts,
+  loadEvents,
+  loadVenues,
+  loadSuppliers,
+  resizeViewport,
+} from '../actions'
+
+const setPayload = (_, { payload }) => payload
+const hosts = createReducer([]).handleAction(loadHosts, setPayload)
+const events = createReducer([]).handleAction(loadEvents, setPayload)
+const venues = createReducer([]).handleAction(loadVenues, setPayload)
+const suppliers = createReducer([]).handleAction(loadSuppliers, setPayload)
+const viewport = createReducer({
+  width: window.innerWidth,
+  height: window.innerWidth,
+}).handleAction(resizeViewport, setPayload)
 
 export default combineReducers({
   hosts,
   events,
   venues,
+  suppliers,
   viewport,
 })
