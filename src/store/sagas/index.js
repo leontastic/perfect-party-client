@@ -1,5 +1,5 @@
 import { all, spawn } from 'redux-saga/effects'
-import { addHosts, addEvents } from '../actions'
+import { addHosts, addEvents, addVenues } from '../actions'
 import fetchDispatch from './fetchDispatch'
 import viewport from './viewport'
 
@@ -11,5 +11,6 @@ export default function*() {
     spawn(viewport),
     spawn(fetchDispatch, route('hosts'), addHosts),
     spawn(fetchDispatch, route('events'), addEvents),
+    spawn(fetchDispatch, route('venues'), addVenues),
   ])
 }

@@ -5,19 +5,20 @@ import { createStructuredSelector } from 'reselect'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { AppBar, Container, Tab, Tabs, Typography } from '@material-ui/core'
-
 import EventIcon from '@material-ui/icons/EventOutlined'
 import FaceIcon from '@material-ui/icons/FaceOutlined'
 import LocalFloristIcon from '@material-ui/icons/LocalFloristOutlined'
 import LocalShippingIcon from '@material-ui/icons/LocalShippingOutlined'
 import LocationCityIcon from '@material-ui/icons/LocationCityOutlined'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCartOutlined'
+import { grey } from '@material-ui/core/colors'
 
 import Logo from './components/Logo'
 import { getViewportWidth } from './store/selectors'
 import './App.css'
 import Hosts from './views/Hosts'
 import Events from './views/Events'
+import Venues from './views/Venues'
 
 const TabContainer = ({ children }) => (
   <Container maxWidth='sm'>
@@ -33,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     height: '100%',
     width: '100%',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: grey[50],
   },
   appbar: {
     textAlign: 'center',
@@ -84,7 +85,9 @@ const App = ({ viewportWidth }) => {
         <TabContainer>
           <Events />
         </TabContainer>
-        <TabContainer>Venues</TabContainer>
+        <TabContainer>
+          <Venues />
+        </TabContainer>
         <TabContainer>Suppliers</TabContainer>
         <TabContainer>Products</TabContainer>
         <TabContainer>Orders</TabContainer>

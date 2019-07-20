@@ -31,8 +31,9 @@ const Hosts = ({ events }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button color='primary'>Change Venue</Button>
-        <Button color='primary'>Update Orders</Button>
+        <Button variant='outlined'>Update</Button>
+        <Button variant='outlined'>Order Products</Button>
+        <Button variant='outlined'>Remove</Button>
       </CardActions>
     </Card>
   ))
