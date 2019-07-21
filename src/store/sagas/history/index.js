@@ -1,6 +1,6 @@
 import { eventChannel } from 'redux-saga'
 import { all, call, put, spawn, takeEvery } from 'redux-saga/effects'
-import { navigateTo, setRoute } from '../../actions'
+import { goTo, setRoute } from '../../actions'
 import { getType } from 'typesafe-actions'
 
 const routeUpdateChannel = eventChannel(emitter => {
@@ -9,11 +9,11 @@ const routeUpdateChannel = eventChannel(emitter => {
   return () => window.removeEventListener('popstate', emitRoute)
 })
 
-function* watchNavigateTo() {
-  yield takeEvery(getType(navigateTo), function*({ payload: route, meta: title }) {
+function* watchGoTo() {
+  yield takeEvery(getType(goTo), function*({ payload: route, meta: title }) {
     const pathname = ['', ...route.split('/').filter(str => str)].join('/')
     yield call([window.history, 'pushState'], null, title, pathname)
-    yield put(setRoute(route))
+    yield put(setRoute(pathname))
   })
 }
 
@@ -24,5 +24,5 @@ function* updateRoute() {
 }
 
 export default function*() {
-  yield all([spawn(watchNavigateTo), spawn(updateRoute)])
+  yield all([spawn(watchGoTo), spawn(updateRoute)])
 }

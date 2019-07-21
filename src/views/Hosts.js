@@ -10,18 +10,19 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForeverOutlined'
+import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import EditIcon from '@material-ui/icons/EditOutlined'
 import FaceIcon from '@material-ui/icons/FaceOutlined'
+import { goTo } from '../store/actions'
 import { getHosts } from '../store/selectors'
 
-const Hosts = ({ hosts }) => {
+const Hosts = ({ hosts, goTo }) => {
   return (
     <List>
       {hosts.map(({ hostid, firstname, lastname, phonenumber, email }) => (
         <ListItem key={hostid}>
           <ListItemAvatar>
-            <Avatar>
+            <Avatar bgcolor='textPrimary'>
               <FaceIcon />
             </Avatar>
           </ListItemAvatar>
@@ -36,11 +37,11 @@ const Hosts = ({ hosts }) => {
             }
           />
           <ListItemSecondaryAction>
-            <IconButton>
+            <IconButton color='primary' onClick={() => goTo(`/hosts/edit/${hostid}`)}>
               <EditIcon />
             </IconButton>
-            <IconButton>
-              <DeleteForeverIcon />
+            <IconButton color='secondary' onClick={() => goTo(`/hosts/remove/${hostid}`)}>
+              <DeleteIcon color='error' />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
@@ -53,4 +54,7 @@ export default connect(
   createStructuredSelector({
     hosts: getHosts,
   }),
+  {
+    goTo,
+  },
 )(Hosts)

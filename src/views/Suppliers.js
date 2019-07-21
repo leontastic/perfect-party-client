@@ -10,7 +10,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForeverOutlined'
+import DeleteIcon from '@material-ui/icons/DeleteOutlined'
 import EditIcon from '@material-ui/icons/EditOutlined'
 import LocalShippingIcon from '@material-ui/icons/LocalShippingOutlined'
 import { getSuppliers } from '../store/selectors'
@@ -35,11 +35,11 @@ const Suppliers = ({ suppliers }) => (
           }
         />
         <ListItemSecondaryAction>
-          <IconButton>
-            <EditIcon />
+          <IconButton color='primary'>
+            <EditIcon color='primary' />
           </IconButton>
-          <IconButton>
-            <DeleteForeverIcon />
+          <IconButton color='secondary'>
+            <DeleteIcon color='error' />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>

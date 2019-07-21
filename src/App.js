@@ -1,3 +1,4 @@
+import { startCase } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
@@ -21,7 +22,9 @@ import Hosts from './views/Hosts'
 import Events from './views/Events'
 import Venues from './views/Venues'
 import Suppliers from './views/Suppliers'
-import { createHost, createEvent, createVenue, createSupplier, createProduct, navigateTo } from './store/actions'
+import { goTo } from './store/actions'
+import * as HostForm from './views/HostForm'
+import * as DeleteForm from './views/DeleteForm'
 
 const TabContainer = ({ children }) => (
   <Container maxWidth='sm'>
@@ -62,72 +65,57 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const App = ({
-  viewportWidth,
-  createHost,
-  createEvent,
-  createVenue,
-  createSupplier,
-  createProduct,
-  currentTab,
-  navigateTo,
-}) => {
+const App = ({ viewportWidth, currentTab, goTo }) => {
   const classes = useStyles()
   const tabs = [
     {
-      tabName: 'hosts',
-      name: 'Hosts',
-      content: <Hosts />,
+      entity: 'hosts',
+      view: <Hosts />,
       icon: <FaceIcon />,
-      action: ['Add Host', createHost],
+      action: ['Add Host', 'hosts/new'],
     },
     {
-      tabName: 'events',
-      name: 'Events',
+      entity: 'events',
       icon: <EventIcon />,
-      content: <Events />,
-      action: ['Add Event', createEvent],
+      view: <Events />,
+      action: ['Add Event', 'events/new'],
     },
     {
-      tabName: 'venues',
-      name: 'Venues',
+      entity: 'venues',
       icon: <LocationCityIcon />,
-      content: <Venues />,
-      action: ['Add Venue', createVenue],
+      view: <Venues />,
+      action: ['Add Venue', 'venues/new'],
     },
     {
-      tabName: 'suppliers',
-      name: 'Suppliers',
+      entity: 'suppliers',
       icon: <LocalShippingIcon />,
-      content: <Suppliers />,
-      action: ['Add Supplier', createSupplier],
+      view: <Suppliers />,
+      action: ['Add Supplier', 'suppliers/new'],
     },
     {
-      tabName: 'products',
-      name: 'Products',
+      entity: 'products',
       icon: <LocalFloristIcon />,
-      content: 'Products',
-      action: ['Add Product', createProduct],
+      view: 'Products',
+      action: ['Add Product', 'products/new'],
     },
     {
-      tabName: 'orders',
-      name: 'Orders',
+      entity: 'orders',
       icon: <ShoppingCartIcon />,
-      content: 'Orders',
+      view: 'Orders',
     },
   ]
 
-  const currentTabIndex = tabs.findIndex(({ tabName }) => tabName === currentTab)
+  const currentTabIndex = tabs.findIndex(({ entity }) => entity === currentTab)
 
-  const renderTabNavButton = ({ icon, name, tabName }, index) => (
-    <Tab key={index} icon={icon} label={name} value={tabName} />
+  const renderTabNavButton = ({ icon, entity }, index) => (
+    <Tab key={index} icon={icon} label={startCase(entity)} value={entity} />
   )
 
-  const renderTabContent = ({ content }, index) => <TabContainer key={index}>{content}</TabContainer>
+  const renderTabView = ({ view }, index) => <TabContainer key={index}>{view}</TabContainer>
 
-  const renderTabAction = ({ action: [label, action] = [] }, index) =>
+  const renderTabAction = ({ action: [label, route] = [] }, index) =>
     label &&
-    action && (
+    route && (
       <Slide
         key={index}
         direction='up'
@@ -137,7 +125,7 @@ const App = ({
         mountOnEnter
         unmountOnExit
       >
-        <Fab variant='extended' color='primary' className={classes.fab} onClick={() => action()}>
+        <Fab variant='extended' color='primary' className={classes.fab} onClick={() => goTo(route)}>
           <AddIcon className={classes.fabIcon} />
           {label}
         </Fab>
@@ -150,7 +138,7 @@ const App = ({
         <Logo />
         <Tabs
           value={currentTab}
-          onChange={(event, tabName) => navigateTo(tabName)}
+          onChange={(event, entity) => goTo(entity)}
           variant={viewportWidth > 600 ? 'standard' : 'scrollable'}
           centered={viewportWidth > 600}
         >
@@ -160,7 +148,7 @@ const App = ({
       <SwipeableViews
         axis='x'
         index={currentTabIndex}
-        onChangeIndex={index => navigateTo(tabs[index].tabName)}
+        onChangeIndex={index => goTo(tabs[index].entity)}
         className={classes.tabs}
         springConfig={{
           duration: '0.5s',
@@ -168,9 +156,12 @@ const App = ({
           delay: '0s',
         }}
       >
-        {tabs.map(renderTabContent)}
+        {tabs.map(renderTabView)}
       </SwipeableViews>
       {tabs.map(renderTabAction)}
+      {[...Object.values(HostForm), ...Object.values(DeleteForm)].map((HostForm, index) => (
+        <HostForm key={index} />
+      ))}
     </div>
   )
 }
@@ -181,11 +172,6 @@ export default connect(
     currentTab: getTab,
   }),
   {
-    createHost: createHost.request,
-    createEvent: createEvent.request,
-    createVenue: createVenue.request,
-    createSupplier: createSupplier.request,
-    createProduct: createProduct.request,
-    navigateTo,
+    goTo,
   },
 )(App)

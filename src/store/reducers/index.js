@@ -1,8 +1,18 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'typesafe-actions'
-import { loadHosts, loadEvents, loadVenues, loadSuppliers, resizeViewport, setRoute } from '../actions'
+import {
+  loadHosts,
+  loadEvents,
+  loadVenues,
+  loadSuppliers,
+  resizeViewport,
+  setRoute,
+  setAddHostField,
+  setEditHostField,
+} from '../actions'
 
 const setPayload = (_, { payload }) => payload
+const setPayloadAtMetaKey = (state, { payload, meta }) => ({ ...state, [meta]: payload })
 const hosts = createReducer([]).handleAction(loadHosts, setPayload)
 const events = createReducer([]).handleAction(loadEvents, setPayload)
 const venues = createReducer([]).handleAction(loadVenues, setPayload)
@@ -12,6 +22,18 @@ const viewport = createReducer({
   height: window.innerWidth,
 }).handleAction(resizeViewport, setPayload)
 const route = createReducer(window.location.pathname).handleAction(setRoute, setPayload)
+const forms = combineReducers({
+  addHost: combineReducers({
+    fields: createReducer({})
+      .handleAction(setAddHostField, setPayloadAtMetaKey)
+      .handleAction(setRoute, () => ({})),
+  }),
+  editHost: combineReducers({
+    fields: createReducer({})
+      .handleAction(setEditHostField, setPayloadAtMetaKey)
+      .handleAction(setRoute, () => ({})),
+  }),
+})
 
 export default combineReducers({
   hosts,
@@ -20,4 +42,5 @@ export default combineReducers({
   suppliers,
   viewport,
   route,
+  forms,
 })
