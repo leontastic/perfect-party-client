@@ -26,4 +26,9 @@ export const getContextHost = createSelector(
   getEntityId,
   (hosts, hostid) => find({ hostid })(hosts),
 )
+export const getContextSupplier = createSelector(
+  getSuppliers,
+  getEntityId,
+  (suppliers, supplierid) => find({ supplierid })(suppliers),
+)
 export const createGetFormFields = formName => state => state.forms[formName].fields

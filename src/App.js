@@ -1,4 +1,4 @@
-import { startCase } from 'lodash'
+import { concat, startCase } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
@@ -24,6 +24,7 @@ import Venues from './views/Venues'
 import Suppliers from './views/Suppliers'
 import { goTo } from './store/actions'
 import * as HostForm from './views/HostForm'
+import * as SupplierForm from './views/SupplierForm'
 import * as DeleteForm from './views/DeleteForm'
 
 const TabContainer = ({ children }) => (
@@ -159,8 +160,8 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
         {tabs.map(renderTabView)}
       </SwipeableViews>
       {tabs.map(renderTabAction)}
-      {[...Object.values(HostForm), ...Object.values(DeleteForm)].map((HostForm, index) => (
-        <HostForm key={index} />
+      {concat(...[HostForm, SupplierForm, DeleteForm].map(views => Object.values(views))).map((View, index) => (
+        <View key={index} />
       ))}
     </div>
   )

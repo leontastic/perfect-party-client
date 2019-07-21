@@ -9,6 +9,8 @@ import {
   setRoute,
   setAddHostField,
   setEditHostField,
+  setAddSupplierField,
+  setEditSupplierField,
 } from '../actions'
 
 const setPayload = (_, { payload }) => payload
@@ -31,6 +33,16 @@ const forms = combineReducers({
   editHost: combineReducers({
     fields: createReducer({})
       .handleAction(setEditHostField, setPayloadAtMetaKey)
+      .handleAction(setRoute, () => ({})),
+  }),
+  addSupplier: combineReducers({
+    fields: createReducer({})
+      .handleAction(setAddSupplierField, setPayloadAtMetaKey)
+      .handleAction(setRoute, () => ({})),
+  }),
+  editSupplier: combineReducers({
+    fields: createReducer({})
+      .handleAction(setEditSupplierField, setPayloadAtMetaKey)
       .handleAction(setRoute, () => ({})),
   }),
 })

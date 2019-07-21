@@ -1,14 +1,6 @@
+import { identity } from 'lodash'
 import { all, call, put, spawn, takeEvery } from 'redux-saga/effects'
-import {
-  goTo,
-  loadEvents,
-  loadHosts,
-  loadSuppliers,
-  loadVenues,
-  submitAddHostForm,
-  submitEditHostForm,
-  submitDeleteHostForm,
-} from '../actions'
+import { loadEntityCreator, goTo, loadEvents, loadHosts, loadSuppliers, loadVenues, submitForm } from '../actions'
 import fetchDispatch from './fetchDispatch'
 import history from './history'
 import viewport from './viewport'
@@ -16,35 +8,30 @@ import { getType } from 'typesafe-actions'
 import fetchJson from './fetchJson'
 
 const HOSTNAME = 'http://localhost:8000'
-const route = (...path) => [HOSTNAME, ...path].join('/')
+const apiRoute = (...path) => [HOSTNAME, ...path].filter(identity).join('/')
 
 function* loadInitial() {
   yield all([
-    spawn(fetchDispatch, route('hosts'), loadHosts),
-    spawn(fetchDispatch, route('events'), loadEvents),
-    spawn(fetchDispatch, route('venues'), loadVenues),
-    spawn(fetchDispatch, route('suppliers'), loadSuppliers),
+    spawn(fetchDispatch, apiRoute('hosts'), loadHosts),
+    spawn(fetchDispatch, apiRoute('events'), loadEvents),
+    spawn(fetchDispatch, apiRoute('venues'), loadVenues),
+    spawn(fetchDispatch, apiRoute('suppliers'), loadSuppliers),
   ])
 }
 
+function* reloadEntity(entity) {
+  yield call(fetchDispatch, apiRoute(entity), loadEntityCreator(entity))
+  yield put(goTo(entity))
+}
+
 function* watchSubmitForm() {
-  yield all([
-    takeEvery(getType(submitAddHostForm), function*({ payload }) {
-      yield call(fetchJson, route('hosts'), { method: 'POST', body: payload })
-      yield call(fetchDispatch, route('hosts'), loadHosts)
-      yield put(goTo('/hosts'))
-    }),
-    takeEvery(getType(submitEditHostForm), function*({ payload: { hostid, ...host } }) {
-      yield call(fetchJson, route('hosts', hostid), { method: 'PUT', body: host })
-      yield call(fetchDispatch, route('hosts'), loadHosts)
-      yield put(goTo('/hosts'))
-    }),
-    takeEvery(getType(submitDeleteHostForm), function*({ payload: { hostid } }) {
-      yield call(fetchJson, route('hosts', hostid), { method: 'DELETE' })
-      yield call(fetchDispatch, route('hosts'), loadHosts)
-      yield put(goTo('/hosts'))
-    }),
-  ])
+  yield takeEvery(getType(submitForm), function*({
+    meta: { entity, primaryKey, method },
+    payload: { [primaryKey]: id, ...payload },
+  }) {
+    yield call(fetchJson, apiRoute(entity, id), { method, body: payload })
+    yield call(reloadEntity, entity)
+  })
 }
 
 export default function*() {

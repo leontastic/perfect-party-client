@@ -11,11 +11,11 @@ import {
   DialogTitle,
   Typography,
 } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/DeleteOutlined'
+import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
-import { getContextHost, createGetRouteStartsWith } from '../store/selectors'
-import { createGoTo, submitDeleteHostForm } from '../store/actions'
+import { getContextHost, createGetRouteStartsWith, getContextSupplier } from '../store/selectors'
+import { goToActionCreator, submitFormActionCreator } from '../store/actions'
 
 const useStyles = makeStyles(theme => ({
   leftIcon: {
@@ -63,7 +63,23 @@ export const DeleteHost = connect(
     ),
   }),
   {
-    onCancel: createGoTo('/hosts'),
-    onSubmit: submitDeleteHostForm,
+    onCancel: goToActionCreator('hosts'),
+    onSubmit: submitFormActionCreator('hosts', 'hostid', 'DELETE'),
+  },
+)(DeleteDialog)
+
+export const DeleteSupplier = connect(
+  createStructuredSelector({
+    open: createGetRouteStartsWith('/suppliers/remove'),
+    entity: getContextSupplier,
+    label: () => 'Remove Supplier',
+    message: createSelector(
+      getContextSupplier,
+      supplier => supplier && `Are you sure you want to remove ${supplier.name}?`,
+    ),
+  }),
+  {
+    onCancel: goToActionCreator('suppliers'),
+    onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'DELETE'),
   },
 )(DeleteDialog)
