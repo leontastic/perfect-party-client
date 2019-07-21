@@ -7,9 +7,7 @@ import {
   loadHosts,
   loadSuppliers,
   loadVenues,
-  loadFoodItems,
-  loadDecorItems,
-  loadEntertainment,
+  loadProducts,
   submitForm,
 } from '../actions'
 import fetchDispatch from './fetchDispatch'
@@ -27,9 +25,7 @@ function* loadInitial() {
     spawn(fetchDispatch, apiRoute('events'), loadEvents),
     spawn(fetchDispatch, apiRoute('venues'), loadVenues),
     spawn(fetchDispatch, apiRoute('suppliers'), loadSuppliers),
-    spawn(fetchDispatch, apiRoute('products', 'food'), loadFoodItems),
-    spawn(fetchDispatch, apiRoute('products', 'decor'), loadDecorItems),
-    spawn(fetchDispatch, apiRoute('products', 'entertainment'), loadEntertainment),
+    spawn(fetchDispatch, apiRoute('products'), loadProducts),
   ])
 }
 

@@ -56,7 +56,5 @@ export default connect(
   createStructuredSelector({
     suppliers: getSuppliers,
   }),
-  {
-    goTo,
-  },
+  { goTo },
 )(Suppliers)

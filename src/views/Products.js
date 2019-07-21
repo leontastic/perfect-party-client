@@ -25,7 +25,7 @@ const compactPrice = flow(
   ([number, base]) => (base >= 3 ? `~$${Math.round(number / Math.pow(10, base - 1)) / 10}K` : `$${number}`),
 )
 
-const Products = ({ products }) => {
+const Products = ({ products, goTo }) => {
   const listItemAvatarClasses = useWideListItemAvatarStyles()
   const listItemClasses = useListItemStyles()
   return (

@@ -2,7 +2,6 @@ import { concat, startCase } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
-import { createStructuredSelector } from 'reselect'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { AppBar, Box, Container, Fab, Slide, Tab, Tabs } from '@material-ui/core'
@@ -16,7 +15,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCartOutlined'
 import { grey } from '@material-ui/core/colors'
 
 import Logo from './components/Logo'
-import { getTab, getViewportWidth } from './store/selectors'
+import { getCurrentEntity, getViewportWidth } from './store/selectors'
 import './App.css'
 import Hosts from './views/Hosts'
 import Events from './views/Events'
@@ -27,6 +26,8 @@ import { goTo } from './store/actions'
 import * as HostForm from './views/HostForm'
 import * as SupplierForm from './views/SupplierForm'
 import * as DeleteForm from './views/DeleteForm'
+import * as ProductForm from './views/ProductForm'
+import { createStructuredSelector } from 'reselect'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -163,9 +164,11 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
         {tabs.map(renderTabView)}
       </SwipeableViews>
       {tabs.map(renderTabAction)}
-      {concat(...[HostForm, SupplierForm, DeleteForm].map(views => Object.values(views))).map((View, index) => (
-        <View key={index} />
-      ))}
+      {concat(...[HostForm, SupplierForm, DeleteForm, ProductForm].map(views => Object.values(views))).map(
+        (View, index) => (
+          <View key={index} />
+        ),
+      )}
     </div>
   )
 }
@@ -173,7 +176,7 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
 export default connect(
   createStructuredSelector({
     viewportWidth: getViewportWidth,
-    currentTab: getTab,
+    currentTab: getCurrentEntity,
   }),
   {
     goTo,

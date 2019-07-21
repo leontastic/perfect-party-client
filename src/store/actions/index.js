@@ -5,9 +5,7 @@ export const loadHosts = createStandardAction('@HOSTS/LOAD')()
 export const loadEvents = createStandardAction('@EVENTS/LOAD')()
 export const loadVenues = createStandardAction('@VENUES/LOAD')()
 export const loadSuppliers = createStandardAction('@SUPPLIERS/LOAD')()
-export const loadFoodItems = createStandardAction('@PRODUCT/FOOD/LOAD')()
-export const loadDecorItems = createStandardAction('@PRODUCT/DECOR/LOAD')()
-export const loadEntertainment = createStandardAction('@PRODUCT/ENTERTAINMENT/LOAD')()
+export const loadProducts = createStandardAction('@PRODUCTS/LOAD')()
 export const loadEntityCreator = entity => createStandardAction(`@${toUpper(entity)}/LOAD`)()
 
 export const addHost = createStandardAction('@HOST/ADD')()
@@ -26,8 +24,7 @@ export const submitForm = createStandardAction('@FORMS/SUBMIT')()
 export const submitFormActionCreator = (entity, primaryKey, method) =>
   createStandardAction('@FORMS/SUBMIT').map(payload => ({ payload, meta: { entity, primaryKey, method } }))
 
-export const setAddHostField = createStandardAction('@FORMS/ADD_HOST/SET_FIELD')()
-export const setEditHostField = createStandardAction('@FORMS/EDIT_HOST/SET_FIELD')()
-export const setAddSupplierField = createStandardAction('@FORMS/ADD_SUPPLIER/SET_FIELD')()
-export const setEditSupplierField = createStandardAction('@FORMS/EDIT_SUPPLIER/SET_FIELD')()
+export const setFormField = createStandardAction('@FORMS/SET_FIELD')()
+export const createSetFormField = form =>
+  createStandardAction('@FORMS/SET_FIELD').map((payload, field) => ({ payload, meta: { form, field } }))
 export const setSearchProductType = createStandardAction('@FORMS/SEARCH_PRODUCT/SET_PRODUCT_TYPE')()

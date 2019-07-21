@@ -1,7 +1,6 @@
-import { defaults } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
-import { createStructuredSelector, createSelector } from 'reselect'
+import { createSelector, createStructuredSelector } from 'reselect'
 import {
   Box,
   Button,
@@ -15,8 +14,8 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
-import { goToActionCreator, setAddHostField, setEditHostField, submitFormActionCreator } from '../store/actions'
-import { createGetRouteStartsWith, createGetFormFields, getContextHost } from '../store/selectors'
+import { goToActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
+import { createGetRouteStartsWith, createFormFieldsSelector, getCurrentHost } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
 
@@ -30,7 +29,7 @@ const HostFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange })
   const classes = useStyles()
   const handleFieldChanged = ({ target: { value, name } }) => onChange(value, name)
   return (
-    <Dialog open={open} onClose={() => onCancel()} maxWidth='xs' scroll='body'>
+    <Dialog open={open} onClose={() => onCancel()} maxWidth='xs' fullWidth scroll='body'>
       <Form onSubmit={() => onSubmit(fields)}>
         <DialogTitle>
           <Box my={1}>
@@ -47,7 +46,6 @@ const HostFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange })
                 label='First Name'
                 name='firstname'
                 value={fields['firstname'] || ''}
-                type='text'
                 fullWidth
                 autoFocus
               />
@@ -60,7 +58,6 @@ const HostFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange })
                 label='Last Name'
                 name='lastname'
                 value={fields['lastname'] || ''}
-                type='text'
                 fullWidth
               />
             </Grid>
@@ -84,7 +81,6 @@ const HostFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange })
                 label='Phone Number'
                 name='phonenumber'
                 value={fields['phonenumber'] || ''}
-                type='text'
                 fullWidth
               />
             </Grid>
@@ -109,11 +105,11 @@ const HostFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange })
 export const AddHostForm = connect(
   createStructuredSelector({
     open: createGetRouteStartsWith('/hosts/new'),
-    fields: createGetFormFields('addHost'),
+    fields: createFormFieldsSelector('addHost'),
     editing: () => false,
   }),
   {
-    onChange: setAddHostField,
+    onChange: createSetFormField('addHost'),
     onSubmit: submitFormActionCreator('hosts', 'hostid', 'POST'),
     onCancel: goToActionCreator('hosts'),
   },
@@ -123,14 +119,14 @@ export const EditHostForm = connect(
   createStructuredSelector({
     open: createGetRouteStartsWith('/hosts/edit'),
     fields: createSelector(
-      createGetFormFields('editHost'),
-      getContextHost,
-      defaults,
+      createFormFieldsSelector('editHost'),
+      getCurrentHost,
+      (fields, host) => ({ ...host, ...fields }),
     ),
     editing: () => true,
   }),
   {
-    onChange: setEditHostField,
+    onChange: createSetFormField('editHost'),
     onSubmit: submitFormActionCreator('hosts', 'hostid', 'PUT'),
     onCancel: goToActionCreator('hosts'),
   },

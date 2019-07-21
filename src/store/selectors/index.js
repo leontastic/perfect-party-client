@@ -1,5 +1,7 @@
-import { find, startsWith, toNumber } from 'lodash/fp'
+import { find, get, identity, filter, flow, split, startsWith, toNumber } from 'lodash/fp'
 import { createSelector } from 'reselect'
+import createDeepMemoizedSelector from './createDeepMemoizedSelector'
+import { PRIMARY_KEYS } from '../../utils/constants'
 
 export const getViewportWidth = state => state.viewport.width
 export const getViewportHeight = state => state.viewport.height
@@ -9,33 +11,47 @@ export const getVenues = state => state.venues
 export const getSuppliers = state => state.suppliers
 export const getProducts = state => state.products
 export const getRoute = state => state.route
-export const getTab = state => state.route.split('/').filter(str => str)[0]
 export const createGetRouteStartsWith = match =>
   createSelector(
     getRoute,
     startsWith(match),
   )
-const getEntityId = createSelector(
+export const getPathArray = createSelector(
   getRoute,
-  route => {
-    const id = route.split('/')[3]
-    return id && toNumber(id)
-  },
+  flow(
+    split('/'),
+    filter(identity),
+  ),
 )
-export const getContextHost = createSelector(
-  getHosts,
-  getEntityId,
-  (hosts, hostid) => find({ hostid })(hosts),
+export const getCurrentEntity = createDeepMemoizedSelector(getPathArray, get(0))
+export const getCurrentActivity = createDeepMemoizedSelector(getPathArray, get(1))
+const getCurrentEntityId = createDeepMemoizedSelector(
+  getPathArray,
+  flow(
+    get(2),
+    toNumber,
+  ),
 )
-export const getContextSupplier = createSelector(
-  getSuppliers,
-  getEntityId,
-  (suppliers, supplierid) => find({ supplierid })(suppliers),
+export const getCurrentEntityPrimaryKey = createSelector(
+  getCurrentEntity,
+  entity => PRIMARY_KEYS[entity],
 )
-export const createGetFormFields = formName => state => state.forms[formName].fields
+const createActiveEntitySelector = (entityName, selectRecords) =>
+  createSelector(
+    getCurrentEntity,
+    getCurrentEntityId,
+    getCurrentEntityPrimaryKey,
+    selectRecords,
+    (entity, id, pk, records) => (entity === entityName ? find({ [pk]: id })(records) : undefined),
+  )
+export const getCurrentHost = createActiveEntitySelector('hosts', getHosts)
+export const getCurrentSupplier = createActiveEntitySelector('suppliers', getSuppliers)
+export const getCurrentProduct = createActiveEntitySelector('products', getProducts)
+export const getCurrentEvent = createActiveEntitySelector('events', getEvents)
+export const createFormFieldsSelector = formName => state => state.forms[formName]
 export const getSearchProductType = state => state.forms.searchProducts.productType
 export const getSearchProductResults = createSelector(
   getSearchProductType,
   getProducts,
-  (searchProductType, products) => products[searchProductType],
+  (searchProductType, products) => products.filter(({ producttype }) => producttype === searchProductType),
 )

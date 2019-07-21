@@ -1,7 +1,6 @@
-import { defaults } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
-import { createStructuredSelector, createSelector } from 'reselect'
+import { createSelector, createStructuredSelector } from 'reselect'
 import {
   Box,
   Button,
@@ -15,8 +14,8 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
-import { goToActionCreator, setAddSupplierField, setEditSupplierField, submitFormActionCreator } from '../store/actions'
-import { createGetRouteStartsWith, createGetFormFields, getContextSupplier } from '../store/selectors'
+import { goToActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
+import { createGetRouteStartsWith, createFormFieldsSelector, getCurrentSupplier } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
 
@@ -30,7 +29,7 @@ const SupplierFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChang
   const classes = useStyles()
   const handleFieldChanged = ({ target: { value, name } }) => onChange(value, name)
   return (
-    <Dialog open={open} onClose={() => onCancel()} maxWidth='xs' scroll='body'>
+    <Dialog open={open} onClose={() => onCancel()} maxWidth='xs' fullWidth scroll='body'>
       <Form onSubmit={() => onSubmit(fields)}>
         <DialogTitle>
           <Box my={1}>
@@ -47,7 +46,6 @@ const SupplierFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChang
                 label='Name'
                 name='name'
                 value={fields['name'] || ''}
-                type='text'
                 fullWidth
                 autoFocus
               />
@@ -72,7 +70,6 @@ const SupplierFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChang
                 label='Address'
                 name='address'
                 value={fields['address'] || ''}
-                type='text'
                 fullWidth
               />
             </Grid>
@@ -97,11 +94,11 @@ const SupplierFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChang
 export const AddSupplierForm = connect(
   createStructuredSelector({
     open: createGetRouteStartsWith('/suppliers/new'),
-    fields: createGetFormFields('addSupplier'),
+    fields: createFormFieldsSelector('addSupplier'),
     editing: () => false,
   }),
   {
-    onChange: setAddSupplierField,
+    onChange: createSetFormField('addSupplier'),
     onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'POST'),
     onCancel: goToActionCreator('suppliers'),
   },
@@ -111,14 +108,14 @@ export const EditSupplierForm = connect(
   createStructuredSelector({
     open: createGetRouteStartsWith('/suppliers/edit'),
     fields: createSelector(
-      createGetFormFields('editSupplier'),
-      getContextSupplier,
-      defaults,
+      createFormFieldsSelector('editSupplier'),
+      getCurrentSupplier,
+      (fields, supplier) => ({ ...supplier, ...fields }),
     ),
     editing: () => true,
   }),
   {
-    onChange: setEditSupplierField,
+    onChange: createSetFormField('editSupplier'),
     onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'PUT'),
     onCancel: goToActionCreator('suppliers'),
   },
