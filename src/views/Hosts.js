@@ -15,12 +15,14 @@ import EditIcon from '@material-ui/icons/EditOutlined'
 import FaceIcon from '@material-ui/icons/FaceOutlined'
 import { goTo } from '../store/actions'
 import { getHosts } from '../store/selectors'
+import { useListItemStyles } from '../utils/hooks/styles'
 
 const Hosts = ({ hosts, goTo }) => {
+  const listItemClasses = useListItemStyles()
   return (
     <List>
       {hosts.map(({ hostid, firstname, lastname, phonenumber, email }) => (
-        <ListItem key={hostid}>
+        <ListItem key={hostid} classes={listItemClasses}>
           <ListItemAvatar>
             <Avatar bgcolor='textPrimary'>
               <FaceIcon />

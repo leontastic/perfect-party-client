@@ -5,7 +5,7 @@ import SwipeableViews from 'react-swipeable-views'
 import { createStructuredSelector } from 'reselect'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { AppBar, Container, Fab, Slide, Tab, Tabs, Typography } from '@material-ui/core'
+import { AppBar, Box, Container, Fab, Slide, Tab, Tabs } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import EventIcon from '@material-ui/icons/EventOutlined'
 import FaceIcon from '@material-ui/icons/FaceOutlined'
@@ -20,20 +20,13 @@ import { getTab, getViewportWidth } from './store/selectors'
 import './App.css'
 import Hosts from './views/Hosts'
 import Events from './views/Events'
+import Products from './views/Products'
 import Venues from './views/Venues'
 import Suppliers from './views/Suppliers'
 import { goTo } from './store/actions'
 import * as HostForm from './views/HostForm'
 import * as SupplierForm from './views/SupplierForm'
 import * as DeleteForm from './views/DeleteForm'
-
-const TabContainer = ({ children }) => (
-  <Container maxWidth='sm'>
-    <Typography component='div' style={{ paddingTop: 24, paddingBottom: 24 }}>
-      {children}
-    </Typography>
-  </Container>
-)
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -72,6 +65,7 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
     {
       entity: 'hosts',
       view: <Hosts />,
+      width: 'sm',
       icon: <FaceIcon />,
       action: ['Add Host', 'hosts/new'],
     },
@@ -79,30 +73,35 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
       entity: 'events',
       icon: <EventIcon />,
       view: <Events />,
+      width: 'sm',
       action: ['Add Event', 'events/new'],
     },
     {
       entity: 'venues',
       icon: <LocationCityIcon />,
       view: <Venues />,
+      width: 'sm',
       action: ['Add Venue', 'venues/new'],
     },
     {
       entity: 'suppliers',
       icon: <LocalShippingIcon />,
       view: <Suppliers />,
+      width: 'sm',
       action: ['Add Supplier', 'suppliers/new'],
     },
     {
       entity: 'products',
       icon: <LocalFloristIcon />,
-      view: 'Products',
+      view: <Products />,
+      width: 'sm',
       action: ['Add Product', 'products/new'],
     },
     {
       entity: 'orders',
       icon: <ShoppingCartIcon />,
       view: 'Orders',
+      width: 'sm',
     },
   ]
 
@@ -112,7 +111,11 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
     <Tab key={index} icon={icon} label={startCase(entity)} value={entity} />
   )
 
-  const renderTabView = ({ view }, index) => <TabContainer key={index}>{view}</TabContainer>
+  const renderTabView = ({ view, width }, index) => (
+    <Container key={index} maxWidth={width}>
+      <Box py={6}>{view}</Box>
+    </Container>
+  )
 
   const renderTabAction = ({ action: [label, route] = [] }, index) =>
     label &&

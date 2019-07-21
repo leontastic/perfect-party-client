@@ -1,6 +1,17 @@
 import { identity } from 'lodash'
 import { all, call, put, spawn, takeEvery } from 'redux-saga/effects'
-import { loadEntityCreator, goTo, loadEvents, loadHosts, loadSuppliers, loadVenues, submitForm } from '../actions'
+import {
+  loadEntityCreator,
+  goTo,
+  loadEvents,
+  loadHosts,
+  loadSuppliers,
+  loadVenues,
+  loadFoodItems,
+  loadDecorItems,
+  loadEntertainment,
+  submitForm,
+} from '../actions'
 import fetchDispatch from './fetchDispatch'
 import history from './history'
 import viewport from './viewport'
@@ -16,6 +27,9 @@ function* loadInitial() {
     spawn(fetchDispatch, apiRoute('events'), loadEvents),
     spawn(fetchDispatch, apiRoute('venues'), loadVenues),
     spawn(fetchDispatch, apiRoute('suppliers'), loadSuppliers),
+    spawn(fetchDispatch, apiRoute('products', 'food'), loadFoodItems),
+    spawn(fetchDispatch, apiRoute('products', 'decor'), loadDecorItems),
+    spawn(fetchDispatch, apiRoute('products', 'entertainment'), loadEntertainment),
   ])
 }
 

@@ -1,16 +1,20 @@
 import { combineReducers } from 'redux'
 import { createReducer } from 'typesafe-actions'
 import {
-  loadHosts,
+  loadDecorItems,
+  loadEntertainment,
   loadEvents,
-  loadVenues,
+  loadFoodItems,
+  loadHosts,
   loadSuppliers,
+  loadVenues,
   resizeViewport,
-  setRoute,
   setAddHostField,
-  setEditHostField,
   setAddSupplierField,
+  setEditHostField,
   setEditSupplierField,
+  setRoute,
+  setSearchProductType,
 } from '../actions'
 
 const setPayload = (_, { payload }) => payload
@@ -19,6 +23,11 @@ const hosts = createReducer([]).handleAction(loadHosts, setPayload)
 const events = createReducer([]).handleAction(loadEvents, setPayload)
 const venues = createReducer([]).handleAction(loadVenues, setPayload)
 const suppliers = createReducer([]).handleAction(loadSuppliers, setPayload)
+const products = combineReducers({
+  decor: createReducer([]).handleAction(loadDecorItems, setPayload),
+  entertainment: createReducer([]).handleAction(loadEntertainment, setPayload),
+  food: createReducer([]).handleAction(loadFoodItems, setPayload),
+})
 const viewport = createReducer({
   width: window.innerWidth,
   height: window.innerWidth,
@@ -45,6 +54,9 @@ const forms = combineReducers({
       .handleAction(setEditSupplierField, setPayloadAtMetaKey)
       .handleAction(setRoute, () => ({})),
   }),
+  searchProducts: combineReducers({
+    productType: createReducer('food').handleAction(setSearchProductType, setPayload),
+  }),
 })
 
 export default combineReducers({
@@ -52,6 +64,7 @@ export default combineReducers({
   events,
   venues,
   suppliers,
+  products,
   viewport,
   route,
   forms,
