@@ -37,6 +37,8 @@ const forms = combineReducers({
   editSupplier: formFieldsReducer('editSupplier'),
   addProduct: formFieldsReducer('addProduct'),
   editProduct: formFieldsReducer('editProduct'),
+  addVenue: formFieldsReducer('addVenue'),
+  editVenue: formFieldsReducer('editVenue'),
   searchProducts: combineReducers({
     productType: createReducer('FoodItem').handleAction(setSearchProductType, setPayload),
   }),

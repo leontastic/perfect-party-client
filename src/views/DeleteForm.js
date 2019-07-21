@@ -14,7 +14,14 @@ import {
 import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
-import { createGetRouteStartsWith, getCurrentSupplier, getCurrentHost, getCurrentProduct } from '../store/selectors'
+import {
+  createGetRouteStartsWith,
+  getCurrentEvent,
+  getCurrentHost,
+  getCurrentProduct,
+  getCurrentSupplier,
+  getCurrentVenue,
+} from '../store/selectors'
 import { goToActionCreator, submitFormActionCreator } from '../store/actions'
 
 const useStyles = makeStyles(theme => ({
@@ -97,5 +104,37 @@ export const DeleteProduct = connect(
   {
     onCancel: goToActionCreator('products'),
     onSubmit: submitFormActionCreator('products', 'productid', 'DELETE'),
+  },
+)(DeleteDialog)
+
+export const DeleteEvent = connect(
+  createStructuredSelector({
+    open: createGetRouteStartsWith('/events/remove'),
+    entity: getCurrentEvent,
+    label: () => 'Remove Event',
+    message: createSelector(
+      getCurrentEvent,
+      event => event && `Are you sure you want to remove ${event.eventname}?`,
+    ),
+  }),
+  {
+    onCancel: goToActionCreator('events'),
+    onSubmit: submitFormActionCreator('events', 'eventid', 'DELETE'),
+  },
+)(DeleteDialog)
+
+export const DeleteVenue = connect(
+  createStructuredSelector({
+    open: createGetRouteStartsWith('/venues/remove'),
+    entity: getCurrentVenue,
+    label: () => 'Remove Venue',
+    message: createSelector(
+      getCurrentVenue,
+      venue => venue && `Are you sure you want to remove ${venue.name}?`,
+    ),
+  }),
+  {
+    onCancel: goToActionCreator('venues'),
+    onSubmit: submitFormActionCreator('venues', 'venueid', 'DELETE'),
   },
 )(DeleteDialog)

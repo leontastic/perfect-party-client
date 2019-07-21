@@ -29,44 +29,40 @@ const Products = ({ products, goTo }) => {
   const listItemAvatarClasses = useWideListItemAvatarStyles()
   const listItemClasses = useListItemStyles()
   return (
-    <Box display='flex' flexDirection='column'>
-      <Box flex={1}>
-        <ProductSearchBar />
-      </Box>
-      <Box mt={4}>
-        <List>
-          {products.map(({ productid, name, description, price, suppliername }) => (
-            <ListItem key={productid} classes={listItemClasses} disableGutters>
-              <ListItemAvatar classes={listItemAvatarClasses}>
-                <Box mr={2} textAlign='center'>
-                  {compactPrice(price)}
-                </Box>
-              </ListItemAvatar>
-              <ListItemText
-                primary={name}
-                secondary={
-                  <>
-                    {description}
-                    <br />
-                    <Typography color='primary' variant='caption' component='span'>
-                      {suppliername}
-                    </Typography>
-                  </>
-                }
-              />
-              <ListItemSecondaryAction>
-                <IconButton color='primary' onClick={() => goTo(`/products/edit/${productid}`)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton color='secondary' onClick={() => goTo(`/products/remove/${productid}`)}>
-                  <DeleteIcon color='error' />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    </Box>
+    <>
+      <ProductSearchBar />
+      <List>
+        {products.map(({ productid, name, description, price, suppliername }) => (
+          <ListItem key={productid} classes={listItemClasses} disableGutters>
+            <ListItemAvatar classes={listItemAvatarClasses}>
+              <Box textAlign='center'>
+                <Typography variant='h6'>{compactPrice(price)}</Typography>
+              </Box>
+            </ListItemAvatar>
+            <ListItemText
+              primary={name}
+              secondary={
+                <>
+                  {description}
+                  <br />
+                  <Typography color='primary' variant='caption'>
+                    {suppliername}
+                  </Typography>
+                </>
+              }
+            />
+            <ListItemSecondaryAction>
+              <IconButton color='primary' onClick={() => goTo(`/products/edit/${productid}`)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton color='secondary' onClick={() => goTo(`/products/remove/${productid}`)}>
+                <DeleteIcon color='error' />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+      </List>
+    </>
   )
 }
 

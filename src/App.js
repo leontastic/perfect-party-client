@@ -27,6 +27,7 @@ import * as HostForm from './views/HostForm'
 import * as SupplierForm from './views/SupplierForm'
 import * as DeleteForm from './views/DeleteForm'
 import * as ProductForm from './views/ProductForm'
+import * as VenueForm from './views/VenueForm'
 import { createStructuredSelector } from 'reselect'
 
 const useStyles = makeStyles(theme => ({
@@ -81,7 +82,7 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
       entity: 'venues',
       icon: <LocationCityIcon />,
       view: <Venues />,
-      width: 'sm',
+      width: 'md',
       action: ['Add Venue', 'venues/new'],
     },
     {
@@ -164,7 +165,7 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
         {tabs.map(renderTabView)}
       </SwipeableViews>
       {tabs.map(renderTabAction)}
-      {concat(...[HostForm, SupplierForm, DeleteForm, ProductForm].map(views => Object.values(views))).map(
+      {concat(...[HostForm, SupplierForm, DeleteForm, ProductForm, VenueForm].map(views => Object.values(views))).map(
         (View, index) => (
           <View key={index} />
         ),

@@ -48,6 +48,7 @@ export const getCurrentHost = createActiveEntitySelector('hosts', getHosts)
 export const getCurrentSupplier = createActiveEntitySelector('suppliers', getSuppliers)
 export const getCurrentProduct = createActiveEntitySelector('products', getProducts)
 export const getCurrentEvent = createActiveEntitySelector('events', getEvents)
+export const getCurrentVenue = createActiveEntitySelector('venues', getVenues)
 export const createFormFieldsSelector = formName => state => state.forms[formName]
 export const getSearchProductType = state => state.forms.searchProducts.productType
 export const getSearchProductResults = createSelector(
