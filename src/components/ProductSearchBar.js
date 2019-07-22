@@ -1,7 +1,7 @@
 import { startCase } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Box, Button, Divider, InputAdornment, List, ListItem, TextField, Typography } from '@material-ui/core'
+import { Box, Button, InputAdornment, List, ListItem, TextField, Typography, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import SearchIcon from '@material-ui/icons/SearchOutlined'
 import MusicNoteIcon from '@material-ui/icons/MusicNoteOutlined'
@@ -28,43 +28,45 @@ const ProductSearchBar = ({ productType, setProductType }) => {
   const classes = useStyles()
   const listItemClasses = useListItemStyles()
   return (
-    <>
-      <List>
-        <ListItem classes={listItemClasses}>
-          <Box display='flex' mx={-1} flex={1}>
-            {productTypes.map(([productTypeOption, label, Icon]) => (
-              <Box flex={1} mx={1} key={productTypeOption}>
-                <Button
-                  variant={productTypeOption === productType ? 'contained' : 'text'}
-                  onClick={() => setProductType(productTypeOption)}
-                  color='primary'
-                  fullWidth
-                >
-                  <Icon className={classes.iconLeft} />
-                  <Typography variant='button'>{label}</Typography>
-                </Button>
-              </Box>
-            ))}
-          </Box>
-        </ListItem>
-        <Divider className={classes.divider} />
-        <ListItem classes={listItemClasses}>
-          <TextField
-            fullWidth
-            variant='outlined'
-            type='search'
-            placeholder={`Search ${startCase(productTypes.find(([type]) => type === productType)[1])} Products`}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position='end'>
-                  <SearchIcon color='action' />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </ListItem>
-      </List>
-    </>
+    <List>
+      <ListItem classes={listItemClasses} divider>
+        <Grid container spacing={2}>
+          <Grid item sm={12}>
+            <Box display='flex' mx={-1}>
+              {productTypes.map(([productTypeOption, label, Icon]) => (
+                <Box flex={1} mx={1} key={productTypeOption}>
+                  <Button
+                    variant={productTypeOption === productType ? 'contained' : 'text'}
+                    onClick={() => setProductType(productTypeOption)}
+                    color='primary'
+                    fullWidth
+                    size='large'
+                  >
+                    <Icon className={classes.iconLeft} />
+                    <Typography variant='button'>{label}</Typography>
+                  </Button>
+                </Box>
+              ))}
+            </Box>
+          </Grid>
+          <Grid item sm={12} mx={-1} flex={1}>
+            <TextField
+              fullWidth
+              variant='outlined'
+              type='search'
+              placeholder={`Search ${startCase(productTypes.find(([type]) => type === productType)[1])} Products`}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <SearchIcon color='action' />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+        </Grid>
+      </ListItem>
+    </List>
   )
 }
 

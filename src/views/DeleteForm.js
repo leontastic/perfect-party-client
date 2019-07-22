@@ -15,7 +15,7 @@ import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
 import {
-  createGetRouteStartsWith,
+  createRouteStartsWithSelector,
   getCurrentEvent,
   getCurrentHost,
   getCurrentProduct,
@@ -61,7 +61,7 @@ const DeleteDialog = ({ open, label, entity, message, onCancel, onSubmit }) => {
 
 export const DeleteHost = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/hosts/remove'),
+    open: createRouteStartsWithSelector('/hosts/remove'),
     entity: getCurrentHost,
     label: () => 'Remove Host',
     message: createSelector(
@@ -77,7 +77,7 @@ export const DeleteHost = connect(
 
 export const DeleteSupplier = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/suppliers/remove'),
+    open: createRouteStartsWithSelector('/suppliers/remove'),
     entity: getCurrentSupplier,
     label: () => 'Remove Supplier',
     message: createSelector(
@@ -93,7 +93,7 @@ export const DeleteSupplier = connect(
 
 export const DeleteProduct = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/products/remove'),
+    open: createRouteStartsWithSelector('/products/remove'),
     entity: getCurrentProduct,
     label: () => 'Remove Product',
     message: createSelector(
@@ -109,7 +109,7 @@ export const DeleteProduct = connect(
 
 export const DeleteEvent = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/events/remove'),
+    open: createRouteStartsWithSelector('/events/remove'),
     entity: getCurrentEvent,
     label: () => 'Remove Event',
     message: createSelector(
@@ -125,7 +125,7 @@ export const DeleteEvent = connect(
 
 export const DeleteVenue = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/venues/remove'),
+    open: createRouteStartsWithSelector('/venues/remove'),
     entity: getCurrentVenue,
     label: () => 'Remove Venue',
     message: createSelector(

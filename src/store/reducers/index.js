@@ -1,3 +1,4 @@
+import { get } from 'lodash'
 import { combineReducers } from 'redux'
 import { createReducer } from 'typesafe-actions'
 import {
@@ -10,6 +11,8 @@ import {
   setRoute,
   setSearchProductType,
   setFormField,
+  addProductToCart,
+  removeProductFromCart,
 } from '../actions'
 
 const setPayload = (_, { payload }) => payload
@@ -45,6 +48,15 @@ const forms = combineReducers({
     productType: createReducer('FoodItem').handleAction(setSearchProductType, setPayload),
   }),
 })
+const cart = createReducer({})
+  .handleAction(addProductToCart, (state, { payload, meta }) => ({
+    ...state,
+    [meta]: { ...state[meta], [payload]: get(state, [meta, payload], 0) + 1 },
+  }))
+  .handleAction(removeProductFromCart, (state, { payload, meta }) => ({
+    ...state,
+    [meta]: { ...state[meta], [payload]: Math.max(0, get(state, [meta, payload], 0) - 1) },
+  }))
 
 export default combineReducers({
   hosts,
@@ -55,4 +67,5 @@ export default combineReducers({
   viewport,
   route,
   forms,
+  cart,
 })

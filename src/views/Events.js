@@ -20,7 +20,7 @@ import EventIcon from '@material-ui/icons/EventOutlined'
 import { getEvents } from '../store/selectors'
 import { pushState } from '../store/actions'
 import { useListItemStyles } from '../utils/hooks/styles'
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCartOutlined'
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCartOutlined'
 
 const Events = ({ events, pushState }) => {
   const listItemClasses = useListItemStyles()
@@ -64,7 +64,7 @@ const Events = ({ events, pushState }) => {
           />
           <ListItemSecondaryAction>
             <IconButton onClick={() => pushState(`/events/shop/${eventid}`)}>
-              <AddShoppingCartIcon />
+              <ShoppingCartIcon />
             </IconButton>
             <IconButton color='primary' onClick={() => pushState(`/events/edit/${eventid}`)}>
               <EditIcon />

@@ -15,7 +15,7 @@ import {
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
 import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
-import { createGetRouteStartsWith, createFormFieldsSelector, getCurrentVenue } from '../store/selectors'
+import { createRouteStartsWithSelector, createFormFieldsSelector, getCurrentVenue } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
 
@@ -93,7 +93,7 @@ const VenueFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange }
 
 export const AddVenueForm = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/venues/new'),
+    open: createRouteStartsWithSelector('/venues/new'),
     fields: createFormFieldsSelector('addVenue'),
     editing: () => false,
   }),
@@ -106,7 +106,7 @@ export const AddVenueForm = connect(
 
 export const EditVenueForm = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/venues/edit'),
+    open: createRouteStartsWithSelector('/venues/edit'),
     fields: createSelector(
       createFormFieldsSelector('editVenue'),
       getCurrentVenue,

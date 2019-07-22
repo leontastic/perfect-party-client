@@ -1,4 +1,3 @@
-import { flow, toNumber } from 'lodash/fp'
 import React from 'react'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -15,23 +14,18 @@ import {
 import EditIcon from '@material-ui/icons/EditOutlined'
 import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import ProductSearchBar from '../components/ProductSearchBar'
-import { getSearchProductResults, getSearchProductType } from '../store/selectors'
+import { getSearchProductResults } from '../store/selectors'
 import { pushState } from '../store/actions'
 import { useListItemStyles, useWideListItemAvatarStyles } from '../utils/hooks/styles'
-
-const compactPrice = flow(
-  toNumber,
-  number => [number, Math.floor(Math.log10(number))],
-  ([number, base]) => (base >= 3 ? `~$${Math.round(number / Math.pow(10, base - 1)) / 10}K` : `$${number}`),
-)
+import compactPrice from '../utils/compactPrice'
 
 const Products = ({ products, pushState }) => {
   const listItemAvatarClasses = useWideListItemAvatarStyles()
   const listItemClasses = useListItemStyles()
   return (
     <>
-      <ProductSearchBar />
       <List>
+        <ProductSearchBar />
         {products.map(({ productid, name, description, price, suppliername }) => (
           <ListItem key={productid} classes={listItemClasses} disableGutters>
             <ListItemAvatar classes={listItemAvatarClasses}>
@@ -68,7 +62,6 @@ const Products = ({ products, pushState }) => {
 
 export default connect(
   createStructuredSelector({
-    productType: getSearchProductType,
     products: getSearchProductResults,
   }),
   { pushState },

@@ -1,4 +1,4 @@
-import { find, get, identity, filter, flow, split, startsWith, toNumber } from 'lodash/fp'
+import { filter, find, flow, get, identity, split, startsWith, sum, toNumber, values } from 'lodash/fp'
 import { createSelector } from 'reselect'
 import createDeepMemoizedSelector from './createDeepMemoizedSelector'
 import { PRIMARY_KEYS } from '../../utils/constants'
@@ -11,7 +11,7 @@ export const getVenues = state => state.venues
 export const getSuppliers = state => state.suppliers
 export const getProducts = state => state.products
 export const getRoute = state => state.route
-export const createGetRouteStartsWith = match =>
+export const createRouteStartsWithSelector = match =>
   createSelector(
     getRoute,
     startsWith(match),
@@ -76,4 +76,30 @@ export const getUpdatedEventVenuePrice = createSelector(
 export const getCurrentEventVenueInvoicePrice = createSelector(
   getCurrentEvent,
   get('venueprice'),
+)
+export const getCart = state => state.cart
+export const getCurrentEventCartQuantities = createDeepMemoizedSelector(
+  getCurrentEvent,
+  getCart,
+  ({ eventid } = {}, { [eventid]: eventCart }) => ({ ...eventCart }),
+)
+export const getCurrentEventCartProducts = createSelector(
+  getCurrentEventCartQuantities,
+  getProducts,
+  (quantities, products) =>
+    Object.keys(quantities)
+      .map(toNumber)
+      .map(productid => find({ productid })(products)),
+)
+export const getCurrentEventCartProductCount = createSelector(
+  getCurrentEventCartQuantities,
+  flow(
+    values,
+    sum,
+  ),
+)
+export const getCurrentEventCartValue = createSelector(
+  getCurrentEventCartProducts,
+  getCurrentEventCartQuantities,
+  (products, quantities) => sum(products.map(({ price, productid }) => price * quantities[productid])),
 )

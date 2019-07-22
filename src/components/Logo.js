@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Chip, Typography } from '@material-ui/core'
+import { Avatar, Box, Chip, Typography } from '@material-ui/core'
 import { lightGreen, green } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
 import CakeIcon from '@material-ui/icons/Cake'
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 const Logo = () => {
   const classes = useStyles()
   return (
-    <div className={classes.logo}>
+    <Box display='flex' flexDirection='column' alignItems='center' p={1} bgcolor={green[800]}>
       <Chip
         avatar={
           <Avatar className={classes.avatar}>
@@ -31,7 +31,7 @@ const Logo = () => {
         size='medium'
         color='primary'
       />
-    </div>
+    </Box>
   )
 }
 

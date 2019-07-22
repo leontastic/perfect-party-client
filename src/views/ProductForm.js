@@ -16,7 +16,12 @@ import {
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
 import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
-import { createGetRouteStartsWith, createFormFieldsSelector, getSuppliers, getCurrentProduct } from '../store/selectors'
+import {
+  createRouteStartsWithSelector,
+  createFormFieldsSelector,
+  getSuppliers,
+  getCurrentProduct,
+} from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
 
@@ -192,7 +197,7 @@ const ProductFormDialog = ({ editing, open, fields, suppliers, onCancel, onSubmi
 export const AddProductForm = connect(
   createStructuredSelector({
     suppliers: getSuppliers,
-    open: createGetRouteStartsWith('/products/new'),
+    open: createRouteStartsWithSelector('/products/new'),
     fields: createFormFieldsSelector('addProduct'),
     editing: () => false,
   }),
@@ -206,7 +211,7 @@ export const AddProductForm = connect(
 export const EditProductForm = connect(
   createStructuredSelector({
     suppliers: getSuppliers,
-    open: createGetRouteStartsWith('/products/edit'),
+    open: createRouteStartsWithSelector('/products/edit'),
     fields: createSelector(
       createFormFieldsSelector('editProduct'),
       getCurrentProduct,

@@ -20,7 +20,7 @@ import CheckIcon from '@material-ui/icons/CheckOutlined'
 import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
 import {
   createFormFieldsSelector,
-  createGetRouteStartsWith,
+  createRouteStartsWithSelector,
   getCurrentEvent,
   getHosts,
   getVenues,
@@ -142,7 +142,7 @@ const EventFormDialog = ({
                   {editing ? (
                     <TextField
                       variant='standard'
-                      label='Original Invoice Price'
+                      label='Original Venue Price'
                       value={currentEventVenueInvoicePrice || ''}
                       InputProps={{ readOnly: true }}
                       fullWidth
@@ -152,14 +152,14 @@ const EventFormDialog = ({
                 <Grid item xs={6}>
                   <TextField
                     variant='standard'
-                    label='Invoice Price'
+                    label='Venue Price'
                     value={
                       (currentEventVenueId === fields.venueid
                         ? currentEventVenueInvoicePrice
                         : updatedEventVenuePrice) || ''
                     }
                     InputProps={{ readOnly: true }}
-                    helperText='The invoice price is predetermined upon booking the venue.'
+                    helperText='The venue price upon booking is the final price, it will not be adjusted.'
                     fullWidth
                   />
                 </Grid>
@@ -187,7 +187,7 @@ export const AddEventForm = connect(
   createStructuredSelector({
     hosts: getHosts,
     venues: getVenues,
-    open: createGetRouteStartsWith('/events/new'),
+    open: createRouteStartsWithSelector('/events/new'),
     fields: createFormFieldsSelector('addEvent'),
     currentEventVenueId: () => undefined,
     currentEventVenueInvoicePrice: getNewEventVenuePrice,
@@ -205,7 +205,7 @@ export const EditEventForm = connect(
   createStructuredSelector({
     hosts: getHosts,
     venues: getVenues,
-    open: createGetRouteStartsWith('/events/edit'),
+    open: createRouteStartsWithSelector('/events/edit'),
     fields: createSelector(
       createFormFieldsSelector('editEvent'),
       getCurrentEvent,

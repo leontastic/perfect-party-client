@@ -15,7 +15,7 @@ import {
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
 import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
-import { createGetRouteStartsWith, createFormFieldsSelector, getCurrentHost } from '../store/selectors'
+import { createRouteStartsWithSelector, createFormFieldsSelector, getCurrentHost } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
 
@@ -104,7 +104,7 @@ const HostFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange })
 
 export const AddHostForm = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/hosts/new'),
+    open: createRouteStartsWithSelector('/hosts/new'),
     fields: createFormFieldsSelector('addHost'),
     editing: () => false,
   }),
@@ -117,7 +117,7 @@ export const AddHostForm = connect(
 
 export const EditHostForm = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/hosts/edit'),
+    open: createRouteStartsWithSelector('/hosts/edit'),
     fields: createSelector(
       createFormFieldsSelector('editHost'),
       getCurrentHost,

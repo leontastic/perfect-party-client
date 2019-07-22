@@ -30,6 +30,8 @@ import * as DeleteForm from './views/DeleteForm'
 import * as ProductForm from './views/ProductForm'
 import * as VenueForm from './views/VenueForm'
 import * as EventForm from './views/EventForm'
+import ShopDialog from './views/ShopDialog'
+import CartDialog from './views/CartDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -167,7 +169,16 @@ const App = ({ viewportWidth, currentTab, pushState }) => {
       </SwipeableViews>
       {tabs.map(renderTabAction)}
       {concat(
-        ...[HostForm, SupplierForm, DeleteForm, ProductForm, VenueForm, EventForm].map(views => Object.values(views)),
+        Object.values({
+          ...HostForm,
+          ...SupplierForm,
+          ...DeleteForm,
+          ...ProductForm,
+          ...VenueForm,
+          ...EventForm,
+          ShopDialog,
+          CartDialog,
+        }),
       ).map((View, index) => (
         <View key={index} />
       ))}

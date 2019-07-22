@@ -15,7 +15,7 @@ import {
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
 import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
-import { createGetRouteStartsWith, createFormFieldsSelector, getCurrentSupplier } from '../store/selectors'
+import { createRouteStartsWithSelector, createFormFieldsSelector, getCurrentSupplier } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
 
@@ -93,7 +93,7 @@ const SupplierFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChang
 
 export const AddSupplierForm = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/suppliers/new'),
+    open: createRouteStartsWithSelector('/suppliers/new'),
     fields: createFormFieldsSelector('addSupplier'),
     editing: () => false,
   }),
@@ -106,7 +106,7 @@ export const AddSupplierForm = connect(
 
 export const EditSupplierForm = connect(
   createStructuredSelector({
-    open: createGetRouteStartsWith('/suppliers/edit'),
+    open: createRouteStartsWithSelector('/suppliers/edit'),
     fields: createSelector(
       createFormFieldsSelector('editSupplier'),
       getCurrentSupplier,
