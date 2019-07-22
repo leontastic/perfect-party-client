@@ -1,3 +1,4 @@
+import { toNumber } from 'lodash'
 import { DateTime } from 'luxon'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -52,7 +53,7 @@ const Events = ({ events, goTo }) => {
             secondary={
               <Box mt={2}>
                 <Typography variant='body1' color='primary'>
-                  @ {venuename}
+                  @ {venuename} (${toNumber(venueprice)} / day)
                 </Typography>
                 <Typography variant='caption' color='textSecondary'>
                   {venueaddress}

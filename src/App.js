@@ -2,6 +2,7 @@ import { concat, startCase } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
+import { createStructuredSelector } from 'reselect'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { AppBar, Box, Container, Fab, Slide, Tab, Tabs } from '@material-ui/core'
@@ -28,7 +29,7 @@ import * as SupplierForm from './views/SupplierForm'
 import * as DeleteForm from './views/DeleteForm'
 import * as ProductForm from './views/ProductForm'
 import * as VenueForm from './views/VenueForm'
-import { createStructuredSelector } from 'reselect'
+import * as EventForm from './views/EventForm'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -165,11 +166,11 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
         {tabs.map(renderTabView)}
       </SwipeableViews>
       {tabs.map(renderTabAction)}
-      {concat(...[HostForm, SupplierForm, DeleteForm, ProductForm, VenueForm].map(views => Object.values(views))).map(
-        (View, index) => (
-          <View key={index} />
-        ),
-      )}
+      {concat(
+        ...[HostForm, SupplierForm, DeleteForm, ProductForm, VenueForm, EventForm].map(views => Object.values(views)),
+      ).map((View, index) => (
+        <View key={index} />
+      ))}
     </div>
   )
 }

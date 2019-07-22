@@ -24,7 +24,6 @@ export const getPathArray = createSelector(
   ),
 )
 export const getCurrentEntity = createDeepMemoizedSelector(getPathArray, get(0))
-export const getCurrentActivity = createDeepMemoizedSelector(getPathArray, get(1))
 const getCurrentEntityId = createDeepMemoizedSelector(
   getPathArray,
   flow(
@@ -32,7 +31,7 @@ const getCurrentEntityId = createDeepMemoizedSelector(
     toNumber,
   ),
 )
-export const getCurrentEntityPrimaryKey = createSelector(
+const getCurrentEntityPrimaryKey = createSelector(
   getCurrentEntity,
   entity => PRIMARY_KEYS[entity],
 )
@@ -55,4 +54,26 @@ export const getSearchProductResults = createSelector(
   getSearchProductType,
   getProducts,
   (searchProductType, products) => products.filter(({ producttype }) => producttype === searchProductType),
+)
+export const getCurrentEventVenueId = createDeepMemoizedSelector(getCurrentEvent, get('venueid'))
+const getUpdatedEventVenueId = createDeepMemoizedSelector(createFormFieldsSelector('editEvent'), get('venueid'))
+const getNewEventVenueId = createDeepMemoizedSelector(createFormFieldsSelector('addEvent'), get('venueid'))
+const getUpdatedEventVenue = createSelector(
+  getUpdatedEventVenueId,
+  getVenues,
+  (venueid, venues) => venueid && find({ venueid })(venues),
+)
+const getNewEventVenue = createSelector(
+  getNewEventVenueId,
+  getVenues,
+  (venueid, venues) => venueid && find({ venueid })(venues),
+)
+export const getNewEventVenuePrice = createDeepMemoizedSelector(getNewEventVenue, get('price'))
+export const getUpdatedEventVenuePrice = createSelector(
+  getUpdatedEventVenue,
+  get('price'),
+)
+export const getCurrentEventVenueInvoicePrice = createSelector(
+  getCurrentEvent,
+  get('venueprice'),
 )
