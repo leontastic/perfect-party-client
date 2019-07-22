@@ -13,12 +13,12 @@ import {
   Typography,
 } from '@material-ui/core'
 import { getVenues } from '../store/selectors'
-import { goTo } from '../store/actions'
+import { pushState } from '../store/actions'
 import EditIcon from '@material-ui/icons/EditOutlined'
 import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import { useListItemStyles, useWideListItemAvatarStyles } from '../utils/hooks/styles'
 
-const Venues = ({ venues, goTo }) => {
+const Venues = ({ venues, pushState }) => {
   const listItemAvatarClasses = useWideListItemAvatarStyles()
   const listItemClasses = useListItemStyles()
   return (
@@ -47,10 +47,10 @@ const Venues = ({ venues, goTo }) => {
             }
           />
           <ListItemSecondaryAction>
-            <IconButton color='primary' onClick={() => goTo(`/venues/edit/${venueid}`)}>
+            <IconButton color='primary' onClick={() => pushState(`/venues/edit/${venueid}`)}>
               <EditIcon />
             </IconButton>
-            <IconButton color='secondary' onClick={() => goTo(`/venues/remove/${venueid}`)}>
+            <IconButton color='secondary' onClick={() => pushState(`/venues/remove/${venueid}`)}>
               <DeleteIcon color='error' />
             </IconButton>
           </ListItemSecondaryAction>
@@ -64,5 +64,5 @@ export default connect(
   createStructuredSelector({
     venues: getVenues,
   }),
-  { goTo },
+  { pushState },
 )(Venues)

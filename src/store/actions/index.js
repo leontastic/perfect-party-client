@@ -16,8 +16,9 @@ export const addProduct = createStandardAction('@PRODUCT/ADD')()
 
 export const resizeViewport = createStandardAction('@VIEWPORT/RESIZE')()
 
-export const goTo = createStandardAction('@HISTORY/NAVIGATE')()
-export const goToActionCreator = url => createStandardAction('@HISTORY/NAVIGATE').map(() => ({ payload: url }))
+export const pushState = createStandardAction('@HISTORY/PUSH_STATE')()
+export const replaceState = createStandardAction('@HISTORY/REPLACE_STATE')()
+export const pushStateActionCreator = url => createStandardAction('@HISTORY/PUSH_STATE').map(() => ({ payload: url }))
 export const setRoute = createStandardAction('@HISTORY/SET_ROUTE')()
 
 export const submitForm = createStandardAction('@FORMS/SUBMIT')()

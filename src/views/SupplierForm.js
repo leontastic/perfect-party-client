@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
-import { goToActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
+import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
 import { createGetRouteStartsWith, createFormFieldsSelector, getCurrentSupplier } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
@@ -100,7 +100,7 @@ export const AddSupplierForm = connect(
   {
     onChange: createSetFormField('addSupplier'),
     onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'POST'),
-    onCancel: goToActionCreator('suppliers'),
+    onCancel: pushStateActionCreator('suppliers'),
   },
 )(SupplierFormDialog)
 
@@ -117,6 +117,6 @@ export const EditSupplierForm = connect(
   {
     onChange: createSetFormField('editSupplier'),
     onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'PUT'),
-    onCancel: goToActionCreator('suppliers'),
+    onCancel: pushStateActionCreator('suppliers'),
   },
 )(SupplierFormDialog)

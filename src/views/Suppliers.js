@@ -14,10 +14,10 @@ import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import EditIcon from '@material-ui/icons/EditOutlined'
 import LocalShippingIcon from '@material-ui/icons/LocalShippingOutlined'
 import { getSuppliers } from '../store/selectors'
-import { goTo } from '../store/actions'
+import { pushState } from '../store/actions'
 import { useListItemStyles } from '../utils/hooks/styles'
 
-const Suppliers = ({ suppliers, goTo }) => {
+const Suppliers = ({ suppliers, pushState }) => {
   const listItemClasses = useListItemStyles()
   return (
     <List>
@@ -39,10 +39,10 @@ const Suppliers = ({ suppliers, goTo }) => {
             }
           />
           <ListItemSecondaryAction>
-            <IconButton color='primary' onClick={() => goTo(`/suppliers/edit/${supplierid}`)}>
+            <IconButton color='primary' onClick={() => pushState(`/suppliers/edit/${supplierid}`)}>
               <EditIcon color='primary' />
             </IconButton>
-            <IconButton color='secondary' onClick={() => goTo(`/suppliers/remove/${supplierid}`)}>
+            <IconButton color='secondary' onClick={() => pushState(`/suppliers/remove/${supplierid}`)}>
               <DeleteIcon color='error' />
             </IconButton>
           </ListItemSecondaryAction>
@@ -56,5 +56,5 @@ export default connect(
   createStructuredSelector({
     suppliers: getSuppliers,
   }),
-  { goTo },
+  { pushState },
 )(Suppliers)

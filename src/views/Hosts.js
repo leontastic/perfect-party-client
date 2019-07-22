@@ -13,11 +13,11 @@ import {
 import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import EditIcon from '@material-ui/icons/EditOutlined'
 import FaceIcon from '@material-ui/icons/FaceOutlined'
-import { goTo } from '../store/actions'
+import { pushState } from '../store/actions'
 import { getHosts } from '../store/selectors'
 import { useListItemStyles } from '../utils/hooks/styles'
 
-const Hosts = ({ hosts, goTo }) => {
+const Hosts = ({ hosts, pushState }) => {
   const listItemClasses = useListItemStyles()
   return (
     <List>
@@ -39,10 +39,10 @@ const Hosts = ({ hosts, goTo }) => {
             }
           />
           <ListItemSecondaryAction>
-            <IconButton color='primary' onClick={() => goTo(`/hosts/edit/${hostid}`)}>
+            <IconButton color='primary' onClick={() => pushState(`/hosts/edit/${hostid}`)}>
               <EditIcon />
             </IconButton>
-            <IconButton color='secondary' onClick={() => goTo(`/hosts/remove/${hostid}`)}>
+            <IconButton color='secondary' onClick={() => pushState(`/hosts/remove/${hostid}`)}>
               <DeleteIcon color='error' />
             </IconButton>
           </ListItemSecondaryAction>
@@ -57,6 +57,6 @@ export default connect(
     hosts: getHosts,
   }),
   {
-    goTo,
+    pushState,
   },
 )(Hosts)

@@ -22,7 +22,7 @@ import {
   getCurrentSupplier,
   getCurrentVenue,
 } from '../store/selectors'
-import { goToActionCreator, submitFormActionCreator } from '../store/actions'
+import { pushStateActionCreator, submitFormActionCreator } from '../store/actions'
 
 const useStyles = makeStyles(theme => ({
   leftIcon: {
@@ -70,7 +70,7 @@ export const DeleteHost = connect(
     ),
   }),
   {
-    onCancel: goToActionCreator('hosts'),
+    onCancel: pushStateActionCreator('hosts'),
     onSubmit: submitFormActionCreator('hosts', 'hostid', 'DELETE'),
   },
 )(DeleteDialog)
@@ -86,7 +86,7 @@ export const DeleteSupplier = connect(
     ),
   }),
   {
-    onCancel: goToActionCreator('suppliers'),
+    onCancel: pushStateActionCreator('suppliers'),
     onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'DELETE'),
   },
 )(DeleteDialog)
@@ -102,7 +102,7 @@ export const DeleteProduct = connect(
     ),
   }),
   {
-    onCancel: goToActionCreator('products'),
+    onCancel: pushStateActionCreator('products'),
     onSubmit: submitFormActionCreator('products', 'productid', 'DELETE'),
   },
 )(DeleteDialog)
@@ -118,7 +118,7 @@ export const DeleteEvent = connect(
     ),
   }),
   {
-    onCancel: goToActionCreator('events'),
+    onCancel: pushStateActionCreator('events'),
     onSubmit: submitFormActionCreator('events', 'eventid', 'DELETE'),
   },
 )(DeleteDialog)
@@ -134,7 +134,7 @@ export const DeleteVenue = connect(
     ),
   }),
   {
-    onCancel: goToActionCreator('venues'),
+    onCancel: pushStateActionCreator('venues'),
     onSubmit: submitFormActionCreator('venues', 'venueid', 'DELETE'),
   },
 )(DeleteDialog)

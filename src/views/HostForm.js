@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
-import { goToActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
+import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
 import { createGetRouteStartsWith, createFormFieldsSelector, getCurrentHost } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
@@ -111,7 +111,7 @@ export const AddHostForm = connect(
   {
     onChange: createSetFormField('addHost'),
     onSubmit: submitFormActionCreator('hosts', 'hostid', 'POST'),
-    onCancel: goToActionCreator('hosts'),
+    onCancel: pushStateActionCreator('hosts'),
   },
 )(HostFormDialog)
 
@@ -128,6 +128,6 @@ export const EditHostForm = connect(
   {
     onChange: createSetFormField('editHost'),
     onSubmit: submitFormActionCreator('hosts', 'hostid', 'PUT'),
-    onCancel: goToActionCreator('hosts'),
+    onCancel: pushStateActionCreator('hosts'),
   },
 )(HostFormDialog)

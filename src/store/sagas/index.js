@@ -2,7 +2,7 @@ import { identity } from 'lodash'
 import { all, call, put, spawn, takeEvery } from 'redux-saga/effects'
 import {
   loadEntityCreator,
-  goTo,
+  pushState,
   loadEvents,
   loadHosts,
   loadSuppliers,
@@ -31,7 +31,7 @@ function* loadInitial() {
 
 function* reloadEntity(entity) {
   yield call(fetchDispatch, apiRoute(entity), loadEntityCreator(entity))
-  yield put(goTo(entity))
+  yield put(pushState(entity))
 }
 
 function* watchSubmitForm() {

@@ -18,10 +18,11 @@ import EditIcon from '@material-ui/icons/EditOutlined'
 import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import EventIcon from '@material-ui/icons/EventOutlined'
 import { getEvents } from '../store/selectors'
-import { goTo } from '../store/actions'
+import { pushState } from '../store/actions'
 import { useListItemStyles } from '../utils/hooks/styles'
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCartOutlined'
 
-const Events = ({ events, goTo }) => {
+const Events = ({ events, pushState }) => {
   const listItemClasses = useListItemStyles()
   return (
     <List>
@@ -62,10 +63,13 @@ const Events = ({ events, goTo }) => {
             }
           />
           <ListItemSecondaryAction>
-            <IconButton color='primary' onClick={() => goTo(`/events/edit/${eventid}`)}>
+            <IconButton onClick={() => pushState(`/events/shop/${eventid}`)}>
+              <AddShoppingCartIcon />
+            </IconButton>
+            <IconButton color='primary' onClick={() => pushState(`/events/edit/${eventid}`)}>
               <EditIcon />
             </IconButton>
-            <IconButton color='secondary' onClick={() => goTo(`/events/remove/${eventid}`)}>
+            <IconButton color='secondary' onClick={() => pushState(`/events/remove/${eventid}`)}>
               <DeleteIcon color='error' />
             </IconButton>
           </ListItemSecondaryAction>
@@ -79,5 +83,5 @@ export default connect(
   createStructuredSelector({
     events: getEvents,
   }),
-  { goTo },
+  { pushState },
 )(Events)

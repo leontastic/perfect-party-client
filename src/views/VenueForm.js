@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
-import { goToActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
+import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
 import { createGetRouteStartsWith, createFormFieldsSelector, getCurrentVenue } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
@@ -100,7 +100,7 @@ export const AddVenueForm = connect(
   {
     onChange: createSetFormField('addVenue'),
     onSubmit: submitFormActionCreator('venues', 'venueid', 'POST'),
-    onCancel: goToActionCreator('venues'),
+    onCancel: pushStateActionCreator('venues'),
   },
 )(VenueFormDialog)
 
@@ -117,6 +117,6 @@ export const EditVenueForm = connect(
   {
     onChange: createSetFormField('editVenue'),
     onSubmit: submitFormActionCreator('venues', 'venueid', 'PUT'),
-    onCancel: goToActionCreator('venues'),
+    onCancel: pushStateActionCreator('venues'),
   },
 )(VenueFormDialog)

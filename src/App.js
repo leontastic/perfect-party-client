@@ -23,7 +23,7 @@ import Events from './views/Events'
 import Products from './views/Products'
 import Venues from './views/Venues'
 import Suppliers from './views/Suppliers'
-import { goTo } from './store/actions'
+import { pushState } from './store/actions'
 import * as HostForm from './views/HostForm'
 import * as SupplierForm from './views/SupplierForm'
 import * as DeleteForm from './views/DeleteForm'
@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const App = ({ viewportWidth, currentTab, goTo }) => {
+const App = ({ viewportWidth, currentTab, pushState }) => {
   const classes = useStyles()
   const tabs = [
     {
@@ -132,7 +132,7 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
         mountOnEnter
         unmountOnExit
       >
-        <Fab variant='extended' color='primary' className={classes.fab} onClick={() => goTo(route)}>
+        <Fab variant='extended' color='primary' className={classes.fab} onClick={() => pushState(route)}>
           <AddIcon className={classes.fabIcon} />
           {label}
         </Fab>
@@ -145,7 +145,7 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
         <Logo />
         <Tabs
           value={currentTab}
-          onChange={(event, entity) => goTo(entity)}
+          onChange={(event, entity) => pushState(entity)}
           variant={viewportWidth > 600 ? 'standard' : 'scrollable'}
           centered={viewportWidth > 600}
         >
@@ -155,7 +155,7 @@ const App = ({ viewportWidth, currentTab, goTo }) => {
       <SwipeableViews
         axis='x'
         index={currentTabIndex}
-        onChangeIndex={index => goTo(tabs[index].entity)}
+        onChangeIndex={index => pushState(tabs[index].entity)}
         className={classes.tabs}
         springConfig={{
           duration: '0.5s',
@@ -181,6 +181,6 @@ export default connect(
     currentTab: getCurrentEntity,
   }),
   {
-    goTo,
+    pushState,
   },
 )(App)

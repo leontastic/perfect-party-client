@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
-import { goToActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
+import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
 import { createGetRouteStartsWith, createFormFieldsSelector, getSuppliers, getCurrentProduct } from '../store/selectors'
 import Form from '../components/Form'
 import { makeStyles } from '@material-ui/styles'
@@ -199,7 +199,7 @@ export const AddProductForm = connect(
   {
     onChange: createSetFormField('addProduct'),
     onSubmit: submitFormActionCreator('products', 'productid', 'POST'),
-    onCancel: goToActionCreator('products'),
+    onCancel: pushStateActionCreator('products'),
   },
 )(ProductFormDialog)
 
@@ -217,6 +217,6 @@ export const EditProductForm = connect(
   {
     onChange: createSetFormField('editProduct'),
     onSubmit: submitFormActionCreator('products', 'productid', 'PUT'),
-    onCancel: goToActionCreator('products'),
+    onCancel: pushStateActionCreator('products'),
   },
 )(ProductFormDialog)

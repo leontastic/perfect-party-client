@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/AddOutlined'
 import CheckIcon from '@material-ui/icons/CheckOutlined'
-import { goToActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
+import { pushStateActionCreator, submitFormActionCreator, createSetFormField } from '../store/actions'
 import {
   createFormFieldsSelector,
   createGetRouteStartsWith,
@@ -197,7 +197,7 @@ export const AddEventForm = connect(
   {
     onChange: createSetFormField('addEvent'),
     onSubmit: submitFormActionCreator('events', 'eventid', 'POST'),
-    onCancel: goToActionCreator('events'),
+    onCancel: pushStateActionCreator('events'),
   },
 )(EventFormDialog)
 
@@ -219,6 +219,6 @@ export const EditEventForm = connect(
   {
     onChange: createSetFormField('editEvent'),
     onSubmit: submitFormActionCreator('events', 'eventid', 'PUT'),
-    onCancel: goToActionCreator('events'),
+    onCancel: pushStateActionCreator('events'),
   },
 )(EventFormDialog)

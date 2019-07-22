@@ -1,7 +1,7 @@
 import { eventChannel } from 'redux-saga'
 import { startCase } from 'lodash'
 import { all, call, put, select, spawn, takeEvery } from 'redux-saga/effects'
-import { goTo, setRoute } from '../../actions'
+import { pushState, setRoute, replaceState } from '../../actions'
 import { getType } from 'typesafe-actions'
 import { getCurrentEntity } from '../../selectors'
 
@@ -11,17 +11,27 @@ const routeUpdateChannel = eventChannel(emitter => {
   return () => window.removeEventListener('popstate', emitRoute)
 })
 
-function* watchGoTo() {
-  yield takeEvery(getType(goTo), function*({ payload: route, meta: title }) {
+function* watchReplaceState() {
+  yield takeEvery(getType(replaceState), function*({ payload: route }) {
     const pathname = ['', ...route.split('/').filter(str => str)].join('/')
-    yield call([window.history, 'pushState'], null, title, pathname)
+    yield call([window.history, 'replaceState'], null, null, pathname)
+    yield put(setRoute(pathname))
+  })
+}
+
+function* watchPushState() {
+  yield takeEvery(getType(pushState), function*({ payload: route }) {
+    const pathname = ['', ...route.split('/').filter(str => str)].join('/')
+    yield call([window.history, 'pushState'], null, null, pathname)
     yield put(setRoute(pathname))
   })
 }
 
 function* updateRoute() {
+  if (!(yield select(getCurrentEntity))) yield put(replaceState('hosts'))
   yield takeEvery(routeUpdateChannel, function*(pathname) {
-    yield put(setRoute(pathname))
+    if (!(yield select(getCurrentEntity))) yield put(replaceState('hosts'))
+    else yield put(setRoute(pathname))
   })
 }
 
@@ -33,5 +43,5 @@ function* updateDocumentTitle() {
 }
 
 export default function*() {
-  yield all([spawn(watchGoTo), spawn(updateRoute), spawn(updateDocumentTitle)])
+  yield all([spawn(watchPushState), spawn(watchReplaceState), spawn(updateRoute), spawn(updateDocumentTitle)])
 }

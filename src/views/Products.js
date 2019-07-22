@@ -16,7 +16,7 @@ import EditIcon from '@material-ui/icons/EditOutlined'
 import DeleteIcon from '@material-ui/icons/DeleteForeverOutlined'
 import ProductSearchBar from '../components/ProductSearchBar'
 import { getSearchProductResults, getSearchProductType } from '../store/selectors'
-import { goTo } from '../store/actions'
+import { pushState } from '../store/actions'
 import { useListItemStyles, useWideListItemAvatarStyles } from '../utils/hooks/styles'
 
 const compactPrice = flow(
@@ -25,7 +25,7 @@ const compactPrice = flow(
   ([number, base]) => (base >= 3 ? `~$${Math.round(number / Math.pow(10, base - 1)) / 10}K` : `$${number}`),
 )
 
-const Products = ({ products, goTo }) => {
+const Products = ({ products, pushState }) => {
   const listItemAvatarClasses = useWideListItemAvatarStyles()
   const listItemClasses = useListItemStyles()
   return (
@@ -52,10 +52,10 @@ const Products = ({ products, goTo }) => {
               }
             />
             <ListItemSecondaryAction>
-              <IconButton color='primary' onClick={() => goTo(`/products/edit/${productid}`)}>
+              <IconButton color='primary' onClick={() => pushState(`/products/edit/${productid}`)}>
                 <EditIcon />
               </IconButton>
-              <IconButton color='secondary' onClick={() => goTo(`/products/remove/${productid}`)}>
+              <IconButton color='secondary' onClick={() => pushState(`/products/remove/${productid}`)}>
                 <DeleteIcon color='error' />
               </IconButton>
             </ListItemSecondaryAction>
@@ -71,5 +71,5 @@ export default connect(
     productType: getSearchProductType,
     products: getSearchProductResults,
   }),
-  { goTo },
+  { pushState },
 )(Products)
