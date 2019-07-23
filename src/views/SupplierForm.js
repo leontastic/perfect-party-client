@@ -25,11 +25,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SupplierFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange }) => {
+const SupplierFormDialog = ({ editing, open, fields, onClose, onSubmit, onChange }) => {
   const classes = useStyles()
   const handleFieldChanged = ({ target: { value, name } }) => onChange(value, name)
   return (
-    <Dialog open={open} onClose={() => onCancel()} maxWidth='xs' fullWidth scroll='body'>
+    <Dialog open={open} onClose={() => onClose()} maxWidth='xs' fullWidth scroll='body'>
       <Form onSubmit={() => onSubmit(fields)}>
         <DialogTitle>
           <Box my={1}>
@@ -77,7 +77,7 @@ const SupplierFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChang
         </DialogContent>
         <DialogActions>
           <Box display='flex' p={2} flex={1} justifyContent='space-between'>
-            <Button variant='outlined' onClick={() => onCancel()} color='secondary'>
+            <Button variant='outlined' onClick={() => onClose()} color='secondary'>
               Cancel
             </Button>
             <Button variant='contained' type='submit' color='primary'>
@@ -100,7 +100,7 @@ export const AddSupplierForm = connect(
   {
     onChange: createSetFormField('addSupplier'),
     onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'POST'),
-    onCancel: pushStateActionCreator('suppliers'),
+    onClose: pushStateActionCreator('suppliers'),
   },
 )(SupplierFormDialog)
 
@@ -117,6 +117,6 @@ export const EditSupplierForm = connect(
   {
     onChange: createSetFormField('editSupplier'),
     onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'PUT'),
-    onCancel: pushStateActionCreator('suppliers'),
+    onClose: pushStateActionCreator('suppliers'),
   },
 )(SupplierFormDialog)

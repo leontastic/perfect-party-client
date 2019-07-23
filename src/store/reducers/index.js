@@ -1,18 +1,19 @@
-import { get } from 'lodash'
+import { get, groupBy, mapValues } from 'lodash'
 import { combineReducers } from 'redux'
 import { createReducer } from 'typesafe-actions'
 import {
+  addProductToCart,
   loadEvents,
   loadHosts,
+  loadOrders,
   loadProducts,
   loadSuppliers,
   loadVenues,
+  removeProductFromCart,
   resizeViewport,
+  setFormField,
   setRoute,
   setSearchProductType,
-  setFormField,
-  addProductToCart,
-  removeProductFromCart,
 } from '../actions'
 
 const setPayload = (_, { payload }) => payload
@@ -21,6 +22,9 @@ const events = createReducer([]).handleAction(loadEvents, setPayload)
 const venues = createReducer([]).handleAction(loadVenues, setPayload)
 const suppliers = createReducer([]).handleAction(loadSuppliers, setPayload)
 const products = createReducer([]).handleAction(loadProducts, setPayload)
+const orders = createReducer([]).handleAction(loadOrders, (_, { payload }) =>
+  mapValues(groupBy(payload, 'eventid'), orders => groupBy(orders, 'ordertime')),
+)
 const viewport = createReducer({
   width: window.innerWidth,
   height: window.innerWidth,
@@ -68,4 +72,5 @@ export default combineReducers({
   route,
   forms,
   cart,
+  orders,
 })

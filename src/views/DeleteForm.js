@@ -30,11 +30,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const DeleteDialog = ({ open, label, entity, message, onCancel, onSubmit }) => {
+const DeleteDialog = ({ open, label, fields, message, onClose, onSubmit }) => {
   const classes = useStyles()
   return (
-    <Dialog open={open} onClose={() => onCancel()} maxWidth='xs' fullWidth scroll='body'>
-      <Form onSubmit={() => onSubmit(entity)}>
+    <Dialog open={open} onClose={() => onClose()} maxWidth='xs' fullWidth scroll='body'>
+      <Form onSubmit={() => onSubmit(fields)}>
         <DialogTitle>
           <Box my={1}>
             <Typography variant='h4'>{label}</Typography>
@@ -45,7 +45,7 @@ const DeleteDialog = ({ open, label, entity, message, onCancel, onSubmit }) => {
         </DialogContent>
         <DialogActions>
           <Box display='flex' p={2} flex={1} justifyContent='space-between'>
-            <Button variant='outlined' onClick={() => onCancel()} color='secondary'>
+            <Button variant='outlined' onClick={() => onClose()} color='secondary'>
               Cancel
             </Button>
             <Button variant='contained' type='submit' color='secondary'>
@@ -62,7 +62,7 @@ const DeleteDialog = ({ open, label, entity, message, onCancel, onSubmit }) => {
 export const DeleteHost = connect(
   createStructuredSelector({
     open: createRouteStartsWithSelector('/hosts/remove'),
-    entity: getCurrentHost,
+    fields: getCurrentHost,
     label: () => 'Remove Host',
     message: createSelector(
       getCurrentHost,
@@ -70,7 +70,7 @@ export const DeleteHost = connect(
     ),
   }),
   {
-    onCancel: pushStateActionCreator('hosts'),
+    onClose: pushStateActionCreator('hosts'),
     onSubmit: submitFormActionCreator('hosts', 'hostid', 'DELETE'),
   },
 )(DeleteDialog)
@@ -78,7 +78,7 @@ export const DeleteHost = connect(
 export const DeleteSupplier = connect(
   createStructuredSelector({
     open: createRouteStartsWithSelector('/suppliers/remove'),
-    entity: getCurrentSupplier,
+    fields: getCurrentSupplier,
     label: () => 'Remove Supplier',
     message: createSelector(
       getCurrentSupplier,
@@ -86,7 +86,7 @@ export const DeleteSupplier = connect(
     ),
   }),
   {
-    onCancel: pushStateActionCreator('suppliers'),
+    onClose: pushStateActionCreator('suppliers'),
     onSubmit: submitFormActionCreator('suppliers', 'supplierid', 'DELETE'),
   },
 )(DeleteDialog)
@@ -94,7 +94,7 @@ export const DeleteSupplier = connect(
 export const DeleteProduct = connect(
   createStructuredSelector({
     open: createRouteStartsWithSelector('/products/remove'),
-    entity: getCurrentProduct,
+    fields: getCurrentProduct,
     label: () => 'Remove Product',
     message: createSelector(
       getCurrentProduct,
@@ -102,7 +102,7 @@ export const DeleteProduct = connect(
     ),
   }),
   {
-    onCancel: pushStateActionCreator('products'),
+    onClose: pushStateActionCreator('products'),
     onSubmit: submitFormActionCreator('products', 'productid', 'DELETE'),
   },
 )(DeleteDialog)
@@ -110,7 +110,7 @@ export const DeleteProduct = connect(
 export const DeleteEvent = connect(
   createStructuredSelector({
     open: createRouteStartsWithSelector('/events/remove'),
-    entity: getCurrentEvent,
+    fields: getCurrentEvent,
     label: () => 'Remove Event',
     message: createSelector(
       getCurrentEvent,
@@ -118,7 +118,7 @@ export const DeleteEvent = connect(
     ),
   }),
   {
-    onCancel: pushStateActionCreator('events'),
+    onClose: pushStateActionCreator('events'),
     onSubmit: submitFormActionCreator('events', 'eventid', 'DELETE'),
   },
 )(DeleteDialog)
@@ -126,7 +126,7 @@ export const DeleteEvent = connect(
 export const DeleteVenue = connect(
   createStructuredSelector({
     open: createRouteStartsWithSelector('/venues/remove'),
-    entity: getCurrentVenue,
+    fields: getCurrentVenue,
     label: () => 'Remove Venue',
     message: createSelector(
       getCurrentVenue,
@@ -134,7 +134,7 @@ export const DeleteVenue = connect(
     ),
   }),
   {
-    onCancel: pushStateActionCreator('venues'),
+    onClose: pushStateActionCreator('venues'),
     onSubmit: submitFormActionCreator('venues', 'venueid', 'DELETE'),
   },
 )(DeleteDialog)

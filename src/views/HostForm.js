@@ -25,11 +25,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const HostFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange }) => {
+const HostFormDialog = ({ editing, open, fields, onClose, onSubmit, onChange }) => {
   const classes = useStyles()
   const handleFieldChanged = ({ target: { value, name } }) => onChange(value, name)
   return (
-    <Dialog open={open} onClose={() => onCancel()} maxWidth='xs' fullWidth scroll='body'>
+    <Dialog open={open} onClose={() => onClose()} maxWidth='xs' fullWidth scroll='body'>
       <Form onSubmit={() => onSubmit(fields)}>
         <DialogTitle>
           <Box my={1}>
@@ -88,7 +88,7 @@ const HostFormDialog = ({ editing, open, fields, onCancel, onSubmit, onChange })
         </DialogContent>
         <DialogActions>
           <Box display='flex' p={2} flex={1} justifyContent='space-between'>
-            <Button variant='outlined' onClick={() => onCancel()} color='secondary'>
+            <Button variant='outlined' onClick={() => onClose()} color='secondary'>
               Cancel
             </Button>
             <Button variant='contained' type='submit' color='primary'>
@@ -111,7 +111,7 @@ export const AddHostForm = connect(
   {
     onChange: createSetFormField('addHost'),
     onSubmit: submitFormActionCreator('hosts', 'hostid', 'POST'),
-    onCancel: pushStateActionCreator('hosts'),
+    onClose: pushStateActionCreator('hosts'),
   },
 )(HostFormDialog)
 
@@ -128,6 +128,6 @@ export const EditHostForm = connect(
   {
     onChange: createSetFormField('editHost'),
     onSubmit: submitFormActionCreator('hosts', 'hostid', 'PUT'),
-    onCancel: pushStateActionCreator('hosts'),
+    onClose: pushStateActionCreator('hosts'),
   },
 )(HostFormDialog)

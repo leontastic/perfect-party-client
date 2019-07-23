@@ -14,10 +14,9 @@ export const useListItemStyles = makeStyles(theme => ({
     borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
   secondaryAction: {
     paddingRight: theme.spacing(16),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
   },
 }))

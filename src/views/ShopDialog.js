@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 const ShopDialog = ({
   open,
   event: { eventid } = {},
-  onCancel,
+  onClose,
   products,
   cart,
   pushState,
@@ -55,7 +55,7 @@ const ShopDialog = ({
   const classes = useStyles()
   const totalCartItems = cart && Object.values(cart).reduce((sum, count) => sum + count, 0)
   return (
-    <Dialog maxWidth='sm' fullWidth open={open} onClose={() => onCancel()}>
+    <Dialog maxWidth='sm' fullWidth open={open} onClose={() => onClose()}>
       <DialogTitle classes={{ root: classes.title }}>
         <Box my={1} display='flex' justifyContent='space-between' alignItems='flex-start'>
           <Typography variant='h4'>Order Products</Typography>
@@ -122,6 +122,6 @@ export default connect(
     addProductToCart,
     removeProductFromCart,
     pushState,
-    onCancel: pushStateActionCreator('events'),
+    onClose: pushStateActionCreator('events'),
   },
 )(ShopDialog)

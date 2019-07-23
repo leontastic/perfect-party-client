@@ -6,6 +6,7 @@ export const loadEvents = createStandardAction('@EVENTS/LOAD')()
 export const loadVenues = createStandardAction('@VENUES/LOAD')()
 export const loadSuppliers = createStandardAction('@SUPPLIERS/LOAD')()
 export const loadProducts = createStandardAction('@PRODUCTS/LOAD')()
+export const loadOrders = createStandardAction('@ORDERS/LOAD')()
 export const loadEntityCreator = entity => createStandardAction(`@${toUpper(entity)}/LOAD`)()
 
 export const addHost = createStandardAction('@HOST/ADD')()
@@ -22,8 +23,8 @@ export const pushStateActionCreator = url => createStandardAction('@HISTORY/PUSH
 export const setRoute = createStandardAction('@HISTORY/SET_ROUTE')()
 
 export const submitForm = createStandardAction('@FORMS/SUBMIT')()
-export const submitFormActionCreator = (entity, primaryKey, method) =>
-  createStandardAction('@FORMS/SUBMIT').map(payload => ({ payload, meta: { entity, primaryKey, method } }))
+export const submitFormActionCreator = (entity, primaryKey, method, target) =>
+  createStandardAction('@FORMS/SUBMIT').map(payload => ({ payload, meta: { entity, primaryKey, method, target } }))
 
 export const setFormField = createStandardAction('@FORMS/SET_FIELD')()
 export const createSetFormField = form =>

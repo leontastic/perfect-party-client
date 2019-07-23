@@ -1,4 +1,4 @@
-import { filter, find, flow, get, identity, split, startsWith, sum, toNumber, values } from 'lodash/fp'
+import { filter, find, flow, get, identity, pickBy, split, startsWith, sum, toNumber, values } from 'lodash/fp'
 import { createSelector } from 'reselect'
 import createDeepMemoizedSelector from './createDeepMemoizedSelector'
 import { PRIMARY_KEYS } from '../../utils/constants'
@@ -10,6 +10,7 @@ export const getHosts = state => state.hosts
 export const getVenues = state => state.venues
 export const getSuppliers = state => state.suppliers
 export const getProducts = state => state.products
+export const getOrders = state => state.orders
 export const getRoute = state => state.route
 export const createRouteStartsWithSelector = match =>
   createSelector(
@@ -87,7 +88,7 @@ export const getCurrentEventCartProducts = createSelector(
   getCurrentEventCartQuantities,
   getProducts,
   (quantities, products) =>
-    Object.keys(quantities)
+    Object.keys(pickBy(identity)(quantities))
       .map(toNumber)
       .map(productid => find({ productid })(products)),
 )

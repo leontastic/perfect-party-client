@@ -31,11 +31,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ProductFormDialog = ({ editing, open, fields, suppliers, onCancel, onSubmit, onChange }) => {
+const ProductFormDialog = ({ editing, open, fields, suppliers, onClose, onSubmit, onChange }) => {
   const classes = useStyles()
   const handleFieldChanged = ({ target: { value, name } }) => onChange(value, name)
   return (
-    <Dialog open={open} onClose={() => onCancel()} maxWidth='xs' fullWidth scroll='body'>
+    <Dialog open={open} onClose={() => onClose()} maxWidth='xs' fullWidth scroll='body'>
       <Form onSubmit={() => onSubmit(fields)}>
         <DialogTitle>
           <Box my={1}>
@@ -180,7 +180,7 @@ const ProductFormDialog = ({ editing, open, fields, suppliers, onCancel, onSubmi
         ) : null}
         <DialogActions>
           <Box display='flex' p={2} flex={1} justifyContent='space-between'>
-            <Button variant='outlined' onClick={() => onCancel()} color='secondary'>
+            <Button variant='outlined' onClick={() => onClose()} color='secondary'>
               Cancel
             </Button>
             <Button variant='contained' type='submit' color='primary'>
@@ -204,7 +204,7 @@ export const AddProductForm = connect(
   {
     onChange: createSetFormField('addProduct'),
     onSubmit: submitFormActionCreator('products', 'productid', 'POST'),
-    onCancel: pushStateActionCreator('products'),
+    onClose: pushStateActionCreator('products'),
   },
 )(ProductFormDialog)
 
@@ -222,6 +222,6 @@ export const EditProductForm = connect(
   {
     onChange: createSetFormField('editProduct'),
     onSubmit: submitFormActionCreator('products', 'productid', 'PUT'),
-    onCancel: pushStateActionCreator('products'),
+    onClose: pushStateActionCreator('products'),
   },
 )(ProductFormDialog)

@@ -2,13 +2,14 @@ import { identity } from 'lodash'
 import { all, call, put, spawn, takeEvery } from 'redux-saga/effects'
 import {
   loadEntityCreator,
-  pushState,
   loadEvents,
   loadHosts,
+  loadOrders,
+  loadProducts,
   loadSuppliers,
   loadVenues,
-  loadProducts,
   submitForm,
+  pushState,
 } from '../actions'
 import fetchDispatch from './fetchDispatch'
 import history from './history'
@@ -26,19 +27,20 @@ function* loadInitial() {
     spawn(fetchDispatch, apiRoute('venues'), loadVenues),
     spawn(fetchDispatch, apiRoute('suppliers'), loadSuppliers),
     spawn(fetchDispatch, apiRoute('products'), loadProducts),
+    spawn(fetchDispatch, apiRoute('orders'), loadOrders),
   ])
 }
 
 function* reloadEntity(entity) {
   yield call(fetchDispatch, apiRoute(entity), loadEntityCreator(entity))
-  yield put(pushState(entity))
 }
 
 function* watchSubmitForm() {
-  yield takeEvery(getType(submitForm), function*({ meta: { entity, primaryKey, method }, payload }) {
+  yield takeEvery(getType(submitForm), function*({ meta: { entity, primaryKey, method, target = entity }, payload }) {
     if (Array.isArray(payload)) yield call(fetchJson, apiRoute(entity), { method, body: payload })
     else yield call(fetchJson, apiRoute(entity, payload[primaryKey]), { method, body: payload })
     yield call(reloadEntity, entity)
+    yield put(pushState(target))
   })
 }
 

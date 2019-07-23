@@ -30,6 +30,7 @@ import {
   pushStateActionCreator,
   addProductToCart,
   removeProductFromCart,
+  clearCart,
   submitFormActionCreator,
 } from '../store/actions'
 import { useListItemStyles, useWideListItemAvatarStyles } from '../utils/hooks/styles'
@@ -53,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 const CartDialog = ({
   open,
   event: { eventid } = {},
-  onCancel,
+  onClose,
   products = [],
   quantities = {},
   count,
@@ -62,12 +63,13 @@ const CartDialog = ({
   addProductToCart,
   removeProductFromCart,
   onSubmit,
+  clearCart,
 }) => {
   const listItemAvatarClasses = useWideListItemAvatarStyles()
   const listItemClasses = useListItemStyles()
   const classes = useStyles()
   return (
-    <Dialog maxWidth='sm' fullWidth open={open} onClose={() => onCancel()}>
+    <Dialog maxWidth='sm' fullWidth open={open} onClose={() => onClose()}>
       <DialogTitle classes={{ root: classes.title }}>
         <Box my={1} display='flex' justifyContent='space-between' alignItems='flex-start'>
           <Box>
@@ -88,40 +90,38 @@ const CartDialog = ({
         {products.length ? (
           <>
             <List>
-              {products.map(({ productid, name, description, price, suppliername }) =>
-                quantities[productid] ? (
-                  <ListItem key={productid} classes={listItemClasses} disableGutters>
-                    <ListItemAvatar classes={listItemAvatarClasses}>
-                      <Box textAlign='center'>
-                        <Box m={1}>
-                          <Typography variant='h6'>{compactPrice(price)}</Typography>
-                          <Typography variant='subtitle1'>x {quantities[productid]}</Typography>
-                        </Box>
+              {products.map(({ productid, name, description, price, suppliername }) => (
+                <ListItem key={productid} classes={listItemClasses} disableGutters>
+                  <ListItemAvatar classes={listItemAvatarClasses}>
+                    <Box textAlign='center'>
+                      <Box m={1}>
+                        <Typography variant='h6'>{compactPrice(price)}</Typography>
+                        <Typography variant='subtitle1'>x {quantities[productid]}</Typography>
                       </Box>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={name}
-                      secondary={
-                        <>
-                          {description}
-                          <br />
-                          <Typography color='primary' variant='caption'>
-                            {suppliername}
-                          </Typography>
-                        </>
-                      }
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton color='primary' onClick={() => addProductToCart(productid, eventid)}>
-                        <AddShoppingCartIcon />
-                      </IconButton>
-                      <IconButton color='secondary' onClick={() => removeProductFromCart(productid, eventid)}>
-                        <RemoveShoppingCartIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ) : null,
-              )}
+                    </Box>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={name}
+                    secondary={
+                      <>
+                        {description}
+                        <br />
+                        <Typography color='primary' variant='caption'>
+                          {suppliername}
+                        </Typography>
+                      </>
+                    }
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton color='primary' onClick={() => addProductToCart(productid, eventid)}>
+                      <AddShoppingCartIcon />
+                    </IconButton>
+                    <IconButton color='secondary' onClick={() => removeProductFromCart(productid, eventid)}>
+                      <RemoveShoppingCartIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
             </List>
           </>
         ) : (
@@ -132,13 +132,14 @@ const CartDialog = ({
       </DialogContent>
       <DialogActions classes={{ root: classes.title }}>
         <Box display='flex' p={2} flex={1} justifyContent='space-between'>
-          <Button variant='outlined' color='secondary' onClick={() => onCancel()}>
+          <Button variant='outlined' color='secondary' onClick={() => onClose()}>
             Cancel
           </Button>
           <Button
             variant='contained'
             color='primary'
             onClick={() => {
+              clearCart(eventid)
               onSubmit(
                 toPairs(quantities).map(([productid, quantity]) => ({
                   eventid,
@@ -170,7 +171,8 @@ export default connect(
     addProductToCart,
     removeProductFromCart,
     pushState,
-    onCancel: pushStateActionCreator('events'),
-    onSubmit: submitFormActionCreator('orders', 'orderid', 'POST'),
+    onClose: pushStateActionCreator('events'),
+    onSubmit: submitFormActionCreator('orders', 'orderid', 'POST', 'events'),
+    clearCart,
   },
 )(CartDialog)
