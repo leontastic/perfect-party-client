@@ -107,6 +107,7 @@ const EventFormDialog = ({
                 name='eventdate'
                 value={fields['eventdate'] || ''}
                 type='date'
+                InputLabelProps={{ shrink: true }}
                 fullWidth
               />
             </Grid>
