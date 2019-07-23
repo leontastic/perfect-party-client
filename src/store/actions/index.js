@@ -23,8 +23,11 @@ export const pushStateActionCreator = url => createStandardAction('@HISTORY/PUSH
 export const setRoute = createStandardAction('@HISTORY/SET_ROUTE')()
 
 export const submitForm = createStandardAction('@FORMS/SUBMIT')()
-export const submitFormActionCreator = (entity, primaryKey, method, target) =>
-  createStandardAction('@FORMS/SUBMIT').map(payload => ({ payload, meta: { entity, primaryKey, method, target } }))
+export const submitFormActionCreator = (entity, primaryKey, method, target, reload) =>
+  createStandardAction('@FORMS/SUBMIT').map(payload => ({
+    payload,
+    meta: { entity, primaryKey, method, target, reload },
+  }))
 
 export const setFormField = createStandardAction('@FORMS/SET_FIELD')()
 export const createSetFormField = form =>

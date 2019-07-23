@@ -36,10 +36,14 @@ function* reloadEntity(entity) {
 }
 
 function* watchSubmitForm() {
-  yield takeEvery(getType(submitForm), function*({ meta: { entity, primaryKey, method, target = entity }, payload }) {
+  yield takeEvery(getType(submitForm), function*({
+    meta: { entity, primaryKey, method, target = entity, reload },
+    payload,
+  }) {
     if (Array.isArray(payload)) yield call(fetchJson, apiRoute(entity), { method, body: payload })
     else yield call(fetchJson, apiRoute(entity, payload[primaryKey]), { method, body: payload })
     yield call(reloadEntity, entity)
+    if (reload) yield call(reloadEntity, reload)
     yield put(pushState(target))
   })
 }

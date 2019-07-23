@@ -172,7 +172,7 @@ export default connect(
     removeProductFromCart,
     pushState,
     onClose: pushStateActionCreator('events'),
-    onSubmit: submitFormActionCreator('orders', 'orderid', 'POST', 'events'),
+    onSubmit: submitFormActionCreator('orders', 'orderid', 'POST', 'events', 'events'),
     clearCart,
   },
 )(CartDialog)
