@@ -92,7 +92,15 @@ const Events = ({ events, pushState, orders }) => {
                     {orders[eventid]
                       ? toPairs(orders[eventid]).map(([ordertime, orders]) => (
                           <Box p={2} key={ordertime}>
-                            <Typography variant='body1'>{DateTime.fromISO(ordertime).toFormat('ff')}</Typography>
+                            <Chip
+                              avatar={
+                                <Avatar size='small'>
+                                  <EventIcon />
+                                </Avatar>
+                              }
+                              label={<>Ordered on {DateTime.fromISO(ordertime).toFormat('ff')}</>}
+                              color='secondary'
+                            />
                             {orders.map(({ productid, name, quantity, price, total, description }) => (
                               <Box p={2} key={productid}>
                                 <Typography variant='subtitle1'>
