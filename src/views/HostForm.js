@@ -121,7 +121,7 @@ export const EditHostForm = connect(
     fields: createSelector(
       createFormFieldsSelector('editHost'),
       getCurrentHost,
-      (fields, host) => ({ ...host, ...fields }),
+      (fields, { eventcount, ...host } = {}) => ({ ...host, ...fields }),
     ),
     editing: () => true,
   }),
