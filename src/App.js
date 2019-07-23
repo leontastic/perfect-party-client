@@ -12,7 +12,6 @@ import FaceIcon from '@material-ui/icons/FaceOutlined'
 import LocalFloristIcon from '@material-ui/icons/LocalFloristOutlined'
 import LocalShippingIcon from '@material-ui/icons/LocalShippingOutlined'
 import LocationCityIcon from '@material-ui/icons/LocationCityOutlined'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCartOutlined'
 import { grey } from '@material-ui/core/colors'
 
 import Logo from './components/Logo'
@@ -101,12 +100,6 @@ const App = ({ viewportWidth, currentTab, pushState }) => {
       view: <Products />,
       width: 'sm',
       action: ['Add Product', 'products/new'],
-    },
-    {
-      entity: 'orders',
-      icon: <ShoppingCartIcon />,
-      view: 'Orders',
-      width: 'sm',
     },
   ]
 
