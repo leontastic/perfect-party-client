@@ -30,6 +30,8 @@ export const setFormField = createStandardAction('@FORMS/SET_FIELD')()
 export const createSetFormField = form =>
   createStandardAction('@FORMS/SET_FIELD').map((payload, field) => ({ payload, meta: { form, field } }))
 export const setSearchProductType = createStandardAction('@FORMS/SEARCH_PRODUCT/SET_PRODUCT_TYPE')()
+export const setSearchProductString = createStandardAction('@FORMS/SEARCH_PRODUCT/SET_PRODUCT_STRING')()
 
 export const addProductToCart = createStandardAction('@CART/ADD_PRODUCT')()
 export const removeProductFromCart = createStandardAction('@CART/REMOVE_PRODUCT')()
+export const clearCart = createStandardAction('@CART/CLEAR')()

@@ -1,4 +1,18 @@
-import { filter, find, flow, get, identity, pickBy, split, startsWith, sum, toNumber, values } from 'lodash/fp'
+import {
+  filter,
+  find,
+  flow,
+  get,
+  identity,
+  includes,
+  lowerCase,
+  pickBy,
+  split,
+  startsWith,
+  sum,
+  toNumber,
+  values,
+} from 'lodash/fp'
 import { createSelector } from 'reselect'
 import createDeepMemoizedSelector from './createDeepMemoizedSelector'
 import { PRIMARY_KEYS } from '../../utils/constants'
@@ -51,10 +65,18 @@ export const getCurrentEvent = createActiveEntitySelector('events', getEvents)
 export const getCurrentVenue = createActiveEntitySelector('venues', getVenues)
 export const createFormFieldsSelector = formName => state => state.forms[formName]
 export const getSearchProductType = state => state.forms.searchProducts.productType
+export const getSearchProductString = state => state.forms.searchProducts.productString
 export const getSearchProductResults = createSelector(
   getSearchProductType,
+  getSearchProductString,
   getProducts,
-  (searchProductType, products) => products.filter(({ producttype }) => producttype === searchProductType),
+  (searchProductType, searchString, products) =>
+    products
+      .filter(({ producttype }) => producttype === searchProductType)
+      .filter(
+        ({ productname, name, description }) =>
+          !searchString || [productname, name, description].map(lowerCase).some(includes(searchString)),
+      ),
 )
 export const getCurrentEventVenueId = createDeepMemoizedSelector(getCurrentEvent, get('venueid'))
 const getUpdatedEventVenueId = createDeepMemoizedSelector(createFormFieldsSelector('editEvent'), get('venueid'))

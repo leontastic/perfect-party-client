@@ -14,6 +14,8 @@ import {
   setFormField,
   setRoute,
   setSearchProductType,
+  clearCart,
+  setSearchProductString,
 } from '../actions'
 
 const setPayload = (_, { payload }) => payload
@@ -50,6 +52,7 @@ const forms = combineReducers({
   editEvent: formFieldsReducer('editEvent'),
   searchProducts: combineReducers({
     productType: createReducer('FoodItem').handleAction(setSearchProductType, setPayload),
+    productString: createReducer('').handleAction(setSearchProductString, setPayload),
   }),
 })
 const cart = createReducer({})
@@ -61,6 +64,7 @@ const cart = createReducer({})
     ...state,
     [meta]: { ...state[meta], [payload]: Math.max(0, get(state, [meta, payload], 0) - 1) },
   }))
+  .handleAction(clearCart, (state, { payload }) => ({ ...state, [payload]: undefined }))
 
 export default combineReducers({
   hosts,

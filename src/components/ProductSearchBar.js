@@ -7,8 +7,8 @@ import SearchIcon from '@material-ui/icons/SearchOutlined'
 import MusicNoteIcon from '@material-ui/icons/MusicNoteOutlined'
 import RestaurantIcon from '@material-ui/icons/RestaurantOutlined'
 import LocalFloristIcon from '@material-ui/icons/LocalFloristOutlined'
-import { getSearchProductType } from '../store/selectors'
-import { setSearchProductType } from '../store/actions'
+import { getSearchProductType, getSearchProductString } from '../store/selectors'
+import { setSearchProductType, setSearchProductString } from '../store/actions'
 import { createStructuredSelector } from 'reselect'
 import { useListItemStyles } from '../utils/hooks/styles'
 
@@ -24,7 +24,7 @@ const productTypes = [
   ['Entertainment', 'Entertainment', MusicNoteIcon],
 ]
 
-const ProductSearchBar = ({ productType, setProductType }) => {
+const ProductSearchBar = ({ productType, searchString, setProductType, setSearchProductString }) => {
   const classes = useStyles()
   const listItemClasses = useListItemStyles()
   return (
@@ -62,6 +62,8 @@ const ProductSearchBar = ({ productType, setProductType }) => {
                   </InputAdornment>
                 ),
               }}
+              value={searchString}
+              onChange={event => setSearchProductString(event.target.value)}
             />
           </Grid>
         </Grid>
@@ -73,8 +75,10 @@ const ProductSearchBar = ({ productType, setProductType }) => {
 export default connect(
   createStructuredSelector({
     productType: getSearchProductType,
+    searchString: getSearchProductString,
   }),
   {
     setProductType: setSearchProductType,
+    setSearchProductString,
   },
 )(ProductSearchBar)
